@@ -11,6 +11,7 @@ requires 'Unicode::UTF8';
 requires 'Path::Tiny';
 requires 'Data::UUID';
 
+requires 'OX';
 requires 'Web::Request';
 requires 'Plack';
 requires 'Plack::Handler::Starman';
