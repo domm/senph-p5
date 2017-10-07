@@ -24,10 +24,19 @@ my $c = container 'Senf' => as {
 
     container 'API' => as {
         service 'Comment' => (
+            lifecycle    => 'Singleton',
+            class        => 'Senf::API::Ctrl::Comment',
+            dependencies => { comment_model => '/Model/Comment', }
+        );
+    };
+
+    container 'Model' => as {
+        service 'Comment' => (
             lifecycle => 'Singleton',
-            class     => 'Senf::API::Ctrl::Comment',
+            class     => 'Senf::Model::Comment',
         );
     }
+
 };
 
 sub init {

@@ -5,6 +5,12 @@ use 5.026;
 
 use Moose;
 
+has 'comment_model' => (
+    is       => 'ro',
+    isa      => 'Senf::Model::Comment',
+    required => 1,
+);
+
 sub item {
     my ( $self, $req, $ident ) = @_;
 
