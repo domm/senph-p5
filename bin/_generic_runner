@@ -1,0 +1,14 @@
+#!/usr/bin/env perl
+use 5.026;
+use strict;
+use warnings;
+use lib::projectroot qw(lib local::lib=local);
+
+use Log::Any::Adapter;
+use Module::Runtime 'use_module';
+
+Log::Any::Adapter->set('Stderr', log_level => $ENV{LOGLEVEL} || 'info');
+
+use Bread::Runner;
+Bread::Runner->run('Senf');
+
