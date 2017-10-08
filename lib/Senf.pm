@@ -11,6 +11,10 @@ use Config::ZOMG;
 
 use Senf::X;
 
+use Senf::Object::Site;
+use Senf::Object::Topic;
+use Senf::Object::Comment;
+
 my $config = Config::ZOMG->new( name => "senf", path => "etc" );
 
 my $c = container 'Senf' => as {
@@ -34,6 +38,9 @@ my $c = container 'Senf' => as {
         service 'Comment' => (
             lifecycle => 'Singleton',
             class     => 'Senf::Model::Comment',
+            dependencies => {
+                storage => literal( $config->load->{data_dir} ),
+            }
         );
     }
 

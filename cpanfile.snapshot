@@ -138,6 +138,13 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Carp-Clan-6.06
+    pathname: K/KE/KENTNL/Carp-Clan-6.06.tar.gz
+    provides:
+      Carp::Clan 6.06
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::Exception 0
   Class-Data-Inheritable-0.08
     pathname: T/TM/TMTM/Class-Data-Inheritable-0.08.tar.gz
     provides:
@@ -499,6 +506,25 @@ DISTRIBUTIONS
       Test::Builder::Module 0
       Time::HiRes 0
       perl 5.008
+  Getopt-Long-Descriptive-0.100
+    pathname: R/RJ/RJBS/Getopt-Long-Descriptive-0.100.tar.gz
+    provides:
+      Getopt::Long::Descriptive 0.100
+      Getopt::Long::Descriptive::Opts 0.100
+      Getopt::Long::Descriptive::Usage 0.100
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 0
+      File::Basename 0
+      Getopt::Long 2.33
+      List::Util 0
+      Params::Validate 0.97
+      Scalar::Util 0
+      Sub::Exporter 0.972
+      Sub::Exporter::Util 0
+      overload 0
+      strict 0
+      warnings 0
   HTTP-Body-1.22
     pathname: G/GE/GETTY/HTTP-Body-1.22.tar.gz
     provides:
@@ -760,6 +786,22 @@ DISTRIBUTIONS
       Encode 2.10
       Exporter 5.57
       ExtUtils::MakeMaker 6.30
+  IO-stringy-2.111
+    pathname: D/DS/DSKOLL/IO-stringy-2.111.tar.gz
+    provides:
+      IO::AtomicFile 2.111
+      IO::Clever 1.01
+      IO::InnerFile 2.111
+      IO::Lines 2.111
+      IO::Scalar 2.111
+      IO::ScalarArray 2.111
+      IO::Stringy 2.111
+      IO::Wrap 2.111
+      IO::WrapTie 2.111
+      IO::WrapTie::Master 2.111
+      IO::WrapTie::Slave 2.111
+    requirements:
+      ExtUtils::MakeMaker 0
   Import-Into-1.002005
     pathname: H/HA/HAARG/Import-Into-1.002005.tar.gz
     provides:
@@ -1482,6 +1524,36 @@ DISTRIBUTIONS
       Storable 0
       namespace::autoclean 0
       perl 5.006
+  MooseX-Getopt-0.71
+    pathname: E/ET/ETHER/MooseX-Getopt-0.71.tar.gz
+    provides:
+      MooseX::Getopt 0.71
+      MooseX::Getopt::Basic 0.71
+      MooseX::Getopt::Dashes 0.71
+      MooseX::Getopt::GLD 0.71
+      MooseX::Getopt::Meta::Attribute 0.71
+      MooseX::Getopt::Meta::Attribute::NoGetopt 0.71
+      MooseX::Getopt::Meta::Attribute::Trait 0.71
+      MooseX::Getopt::Meta::Attribute::Trait::NoGetopt 0.71
+      MooseX::Getopt::OptionTypeMap 0.71
+      MooseX::Getopt::ProcessedArgv 0.71
+      MooseX::Getopt::Strict 0.71
+    requirements:
+      Carp 0
+      Getopt::Long 2.37
+      Getopt::Long::Descriptive 0.088
+      Module::Build::Tiny 0.034
+      Moose 0
+      Moose::Meta::Attribute 0
+      Moose::Role 0.56
+      Moose::Util::TypeConstraints 0
+      MooseX::Role::Parameterized 1.01
+      Scalar::Util 0
+      Try::Tiny 0
+      namespace::autoclean 0
+      perl 5.006
+      strict 0
+      warnings 0
   MooseX-NonMoose-0.26
     pathname: D/DO/DOY/MooseX-NonMoose-0.26.tar.gz
     provides:
@@ -1547,6 +1619,144 @@ DISTRIBUTIONS
       namespace::autoclean 0
       namespace::clean 0.19
       perl 5.008001
+      strict 0
+      warnings 0
+  MooseX-Storage-0.52
+    pathname: E/ET/ETHER/MooseX-Storage-0.52.tar.gz
+    provides:
+      MooseX::Storage 0.52
+      MooseX::Storage::Base::WithChecksum 0.52
+      MooseX::Storage::Basic 0.52
+      MooseX::Storage::Deferred 0.52
+      MooseX::Storage::Engine 0.52
+      MooseX::Storage::Engine::IO::AtomicFile 0.52
+      MooseX::Storage::Engine::IO::File 0.52
+      MooseX::Storage::Engine::Trait::DisableCycleDetection 0.52
+      MooseX::Storage::Engine::Trait::OnlyWhenBuilt 0.52
+      MooseX::Storage::Format::JSON 0.52
+      MooseX::Storage::Format::Storable 0.52
+      MooseX::Storage::Format::YAML 0.52
+      MooseX::Storage::IO::AtomicFile 0.52
+      MooseX::Storage::IO::File 0.52
+      MooseX::Storage::IO::StorableFile 0.52
+      MooseX::Storage::Meta::Attribute::DoNotSerialize 0.52
+      MooseX::Storage::Meta::Attribute::Trait::DoNotSerialize 0.52
+      MooseX::Storage::Traits::DisableCycleDetection 0.52
+      MooseX::Storage::Traits::OnlyWhenBuilt 0.52
+      MooseX::Storage::Util 0.52
+    requirements:
+      CPAN::Meta::Requirements 2.120620
+      Carp 0
+      Data::Dumper 0
+      Digest 0
+      ExtUtils::MakeMaker 0
+      IO::AtomicFile 0
+      IO::File 0
+      JSON::MaybeXS 1.001000
+      Module::Metadata 0
+      Module::Runtime 0
+      Moose 0.99
+      Moose::Meta::Attribute 0
+      Moose::Role 0
+      Scalar::Util 0
+      Storable 0
+      String::RewritePrefix 0
+      YAML::Any 0
+      namespace::autoclean 0
+      perl 5.008
+  MooseX-Types-0.50
+    pathname: E/ET/ETHER/MooseX-Types-0.50.tar.gz
+    provides:
+      MooseX::Types 0.50
+      MooseX::Types::Base 0.50
+      MooseX::Types::CheckedUtilExports 0.50
+      MooseX::Types::Combine 0.50
+      MooseX::Types::Moose 0.50
+      MooseX::Types::TypeDecorator 0.50
+      MooseX::Types::UndefinedType 0.50
+      MooseX::Types::Util 0.50
+      MooseX::Types::Wrapper 0.50
+    requirements:
+      Carp 0
+      Carp::Clan 6.00
+      Exporter 0
+      Module::Build::Tiny 0.034
+      Module::Runtime 0
+      Moose 1.06
+      Moose::Exporter 0
+      Moose::Meta::TypeConstraint::Union 0
+      Moose::Util::TypeConstraints 0
+      Scalar::Util 1.19
+      Sub::Exporter 0
+      Sub::Exporter::ForMethods 0.100052
+      Sub::Install 0
+      Sub::Name 0
+      base 0
+      namespace::autoclean 0.16
+      overload 0
+      perl 5.008
+      strict 0
+      warnings 0
+  MooseX-Types-Path-Class-0.09
+    pathname: E/ET/ETHER/MooseX-Types-Path-Class-0.09.tar.gz
+    provides:
+      MooseX::Types::Path::Class 0.09
+    requirements:
+      Module::Build::Tiny 0.034
+      MooseX::Types 0
+      MooseX::Types::Moose 0
+      Path::Class 0.16
+      if 0
+      perl 5.006
+      strict 0
+      warnings 0
+  MooseX-Types-Path-Tiny-0.012
+    pathname: E/ET/ETHER/MooseX-Types-Path-Tiny-0.012.tar.gz
+    provides:
+      MooseX::Types::Path::Tiny 0.012
+    requirements:
+      Module::Build::Tiny 0.034
+      Moose 2
+      MooseX::Getopt 0
+      MooseX::Types 0
+      MooseX::Types::Moose 0
+      MooseX::Types::Stringlike 0
+      Path::Tiny 0
+      if 0
+      namespace::autoclean 0
+      perl 5.006
+      strict 0
+      warnings 0
+  MooseX-Types-Stringlike-0.003
+    pathname: D/DA/DAGOLDEN/MooseX-Types-Stringlike-0.003.tar.gz
+    provides:
+      MooseX::Types::Stringlike 0.003
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      MooseX::Types 0
+      MooseX::Types::Moose 0
+      overload 0
+      strict 0
+      warnings 0
+  MooseX-Types-URI-0.08
+    pathname: E/ET/ETHER/MooseX-Types-URI-0.08.tar.gz
+    provides:
+      MooseX::Types::URI 0.08
+    requirements:
+      Module::Build::Tiny 0.007
+      MooseX::Types 0.40
+      MooseX::Types::Moose 0
+      MooseX::Types::Path::Class 0
+      Scalar::Util 0
+      URI 0
+      URI::FromHash 0
+      URI::QueryParam 0
+      URI::WithBase 0
+      URI::data 0
+      URI::file 0
+      if 0
+      namespace::autoclean 0
+      perl 5.006
       strict 0
       warnings 0
   Net-Server-2.009
@@ -1731,6 +1941,31 @@ DISTRIBUTIONS
       strict 0
       vars 0
       warnings 0
+  Path-Class-0.37
+    pathname: K/KW/KWILLIAMS/Path-Class-0.37.tar.gz
+    provides:
+      Path::Class 0.37
+      Path::Class::Dir 0.37
+      Path::Class::Entity 0.37
+      Path::Class::File 0.37
+    requirements:
+      Carp 0
+      Cwd 0
+      Exporter 0
+      ExtUtils::MakeMaker 6.30
+      File::Copy 0
+      File::Path 0
+      File::Spec 3.26
+      File::Temp 0
+      File::stat 0
+      IO::Dir 0
+      IO::File 0
+      Module::Build 0.3601
+      Perl::OSType 0
+      Scalar::Util 0
+      overload 0
+      parent 0
+      strict 0
   Path-Router-0.15
     pathname: N/NE/NEILB/Path-Router-0.15.tar.gz
     provides:
@@ -2009,6 +2244,16 @@ DISTRIBUTIONS
       Sub::Exporter 0
       strict 0
       warnings 0
+  String-RewritePrefix-0.007
+    pathname: R/RJ/RJBS/String-RewritePrefix-0.007.tar.gz
+    provides:
+      String::RewritePrefix 0.007
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.30
+      Sub::Exporter 0.972
+      strict 0
+      warnings 0
   Struct-Dumb-0.09
     pathname: P/PE/PEVANS/Struct-Dumb-0.09.tar.gz
     provides:
@@ -2026,6 +2271,17 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.30
       Params::Util 0.14
       Sub::Install 0.92
+      strict 0
+      warnings 0
+  Sub-Exporter-ForMethods-0.100052
+    pathname: R/RJ/RJBS/Sub-Exporter-ForMethods-0.100052.tar.gz
+    provides:
+      Sub::Exporter::ForMethods 0.100052
+    requirements:
+      ExtUtils::MakeMaker 0
+      Scalar::Util 0
+      Sub::Exporter 0.978
+      Sub::Name 0
       strict 0
       warnings 0
   Sub-Exporter-Progressive-0.001013
@@ -2418,6 +2674,18 @@ DISTRIBUTIONS
       strict 0
       utf8 0
       warnings 0
+  URI-FromHash-0.05
+    pathname: D/DR/DROLSKY/URI-FromHash-0.05.tar.gz
+    provides:
+      URI::FromHash 0.05
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      Params::Validate 0
+      URI 1.68
+      strict 0
+      warnings 0
   Unicode-UTF8-0.62
     pathname: C/CH/CHANSEN/Unicode-UTF8-0.62.tar.gz
     provides:
@@ -2501,6 +2769,34 @@ DISTRIBUTIONS
       Moose::Role 0
       Web::Response 0
       perl 5.010
+  YAML-1.23
+    pathname: I/IN/INGY/YAML-1.23.tar.gz
+    provides:
+      YAML 1.23
+      YAML::Any 1.23
+      YAML::Dumper undef
+      YAML::Dumper::Base undef
+      YAML::Error undef
+      YAML::Loader undef
+      YAML::Loader::Base undef
+      YAML::Marshall undef
+      YAML::Mo undef
+      YAML::Node undef
+      YAML::Tag undef
+      YAML::Type::blessed undef
+      YAML::Type::code undef
+      YAML::Type::glob undef
+      YAML::Type::ref undef
+      YAML::Type::regexp undef
+      YAML::Type::undef undef
+      YAML::Types undef
+      YAML::Warning undef
+      yaml_mapping undef
+      yaml_scalar undef
+      yaml_sequence undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.008001
   bareword-filehandles-0.005
     pathname: I/IL/ILMARI/bareword-filehandles-0.005.tar.gz
     provides:

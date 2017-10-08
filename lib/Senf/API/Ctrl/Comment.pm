@@ -11,11 +11,37 @@ has 'comment_model' => (
     required => 1,
 );
 
-sub item {
-    my ( $self, $req, $ident ) = @_;
+sub list {
+    my ( $self, $req, $s, $t ) = @_;
 
-    return $req->json_response( { hello => 'world ' . $ident } );
+    my $site = $self->comment_model->load_site($s);
+    my $topic = $self->comment_model->load_topic($site, $t);
+
+    return $req->json_response($topic->pack);
 }
+
+sub create {
+    my ( $self, $req, $s, $t ) = @_;
+
+    my $site = $self->comment_model->load_site($s);
+    my $topic = $self->comment_model->load_topic($site, $t);
+warn $topic;
+    my $args = {
+        subject => $req->param('subject'),
+        comment => $req->param('comment'),
+    };
+
+    $self->comment_model->create_comment($site, $topic, $args);
+
+    return $req->json_response($topic->pack);
+}
+
+sub reply {}
+sub publish {}
+sub edit {}
+sub delete {}
+
+
 
 __PACKAGE__->meta->make_immutable;
 

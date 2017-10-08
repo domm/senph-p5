@@ -11,6 +11,10 @@ requires 'Unicode::UTF8';
 requires 'Path::Tiny';
 requires 'Data::UUID';
 
+requires 'MooseX::Storage';
+requires 'MooseX::Types::URI';
+requires 'MooseX::Types::Path::Tiny';
+
 requires 'OX';
 requires 'Web::Request';
 requires 'Plack';

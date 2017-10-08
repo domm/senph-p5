@@ -1,3 +1,3 @@
 {
-    foo=>'bar',
+    data_dir=>'var',
 };

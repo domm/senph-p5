@@ -19,7 +19,16 @@ router as {
 
     wrap 'Plack::Middleware::PrettyException';
 
-    route '/comment/:ident' => 'comment_ctrl.item';
+    route '/comments/:site/:topic' => 'comment_ctrl.list'; # GET
+    route '/comment/:site/:topic' => 'comment_ctrl.create'; # GET (show form) / POST
+    route '/reply/:site/:topic/:reply_to_path/:reply_to_ident' => 'comment_ctrl.reply'; # POST
+
+    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/publish' => 'comment_ctrl.publish';
+    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/edit' => 'comment_ctrl.edit';
+    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/delete' => 'comment_ctrl.delete';
+
+
+
 };
 
 sub run {
