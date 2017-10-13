@@ -369,6 +369,59 @@ DISTRIBUTIONS
       base 0
       strict 0
       warnings 0
+  Email-Abstract-3.008
+    pathname: R/RJ/RJBS/Email-Abstract-3.008.tar.gz
+    provides:
+      Email::Abstract 3.008
+      Email::Abstract::EmailMIME 3.008
+      Email::Abstract::EmailSimple 3.008
+      Email::Abstract::MIMEEntity 3.008
+      Email::Abstract::MailInternet 3.008
+      Email::Abstract::MailMessage 3.008
+      Email::Abstract::Plugin 3.008
+    requirements:
+      Carp 0
+      Email::Simple 1.998
+      ExtUtils::MakeMaker 0
+      MRO::Compat 0
+      Module::Pluggable 1.5
+      Scalar::Util 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Email-Date-Format-1.005
+    pathname: R/RJ/RJBS/Email-Date-Format-1.005.tar.gz
+    provides:
+      Email::Date::Format 1.005
+    requirements:
+      Exporter 5.57
+      ExtUtils::MakeMaker 0
+      Time::Local 0
+      strict 0
+      warnings 0
+  Email-Simple-2.214
+    pathname: R/RJ/RJBS/Email-Simple-2.214.tar.gz
+    provides:
+      Email::Simple 2.214
+      Email::Simple::Creator 2.214
+      Email::Simple::Header 2.214
+    requirements:
+      Carp 0
+      Email::Date::Format 0
+      ExtUtils::MakeMaker 0
+      perl 5.008
+      strict 0
+      warnings 0
+  Email-Valid-1.202
+    pathname: R/RJ/RJBS/Email-Valid-1.202.tar.gz
+    provides:
+      Email::Valid 1.202
+    requirements:
+      ExtUtils::MakeMaker 0
+      Mail::Address 0
+      Scalar::Util 0
+      Test::More 0
+      perl 5.006
   Encode-Locale-1.05
     pathname: G/GA/GAAS/Encode-Locale-1.05.tar.gz
     provides:
@@ -954,6 +1007,39 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006
+  MailTools-2.19
+    pathname: M/MA/MARKOV/MailTools-2.19.tar.gz
+    provides:
+      Mail::Address 2.19
+      Mail::Cap 2.19
+      Mail::Field 2.19
+      Mail::Field::AddrList 2.19
+      Mail::Field::Date 2.19
+      Mail::Field::Generic 2.19
+      Mail::Filter 2.19
+      Mail::Header 2.19
+      Mail::Internet 2.19
+      Mail::Mailer 2.19
+      Mail::Mailer::qmail 2.19
+      Mail::Mailer::rfc822 2.19
+      Mail::Mailer::sendmail 2.19
+      Mail::Mailer::smtp 2.19
+      Mail::Mailer::smtp::pipe 2.19
+      Mail::Mailer::smtps 2.19
+      Mail::Mailer::smtps::pipe 2.19
+      Mail::Mailer::testfile 2.19
+      Mail::Mailer::testfile::pipe 2.19
+      Mail::Send 2.19
+      Mail::Util 2.19
+      MailTools 2.19
+    requirements:
+      Date::Format 0
+      Date::Parse 0
+      ExtUtils::MakeMaker 0
+      IO::Handle 0
+      Net::Domain 1.05
+      Net::SMTP 1.03
+      Test::More 0
   Module-Build-0.4224
     pathname: L/LE/LEONT/Module-Build-0.4224.tar.gz
     provides:
@@ -1697,6 +1783,18 @@ DISTRIBUTIONS
       perl 5.008
       strict 0
       warnings 0
+  MooseX-Types-Email-0.007
+    pathname: E/ET/ETHER/MooseX-Types-Email-0.007.tar.gz
+    provides:
+      MooseX::Types::Email 0.007
+    requirements:
+      Email::Abstract 0
+      Email::Valid 0
+      Module::Build::Tiny 0.007
+      MooseX::Types 0
+      MooseX::Types::Moose 0
+      if 0
+      perl 5.006
   MooseX-Types-Path-Class-0.09
     pathname: E/ET/ETHER/MooseX-Types-Path-Class-0.09.tar.gz
     provides:
@@ -2459,6 +2557,28 @@ DISTRIBUTIONS
       Test::Harness 3.35
       Test::More 1.302047
       Test::Warn 0.30
+  Test-Number-Delta-1.06
+    pathname: D/DA/DAGOLDEN/Test-Number-Delta-1.06.tar.gz
+    provides:
+      Test::Number::Delta 1.06
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 6.17
+      Test::Builder 0
+      perl 5.006
+      strict 0
+      vars 0
+      warnings 0
+  Test-Requires-0.10
+    pathname: T/TO/TOKUHIROM/Test-Requires-0.10.tar.gz
+    provides:
+      Test::Requires 0.10
+    requirements:
+      ExtUtils::MakeMaker 6.64
+      Test::Builder::Module 0
+      Test::More 0.47
+      perl 5.006
   Test-SharedFork-0.35
     pathname: E/EX/EXODIST/Test-SharedFork-0.35.tar.gz
     provides:
@@ -2556,6 +2676,65 @@ DISTRIBUTIONS
       Test::More 0
       Test::use::ok 0
       Tie::RefHash 0
+  Time-Moment-0.42
+    pathname: C/CH/CHANSEN/Time-Moment-0.42.tar.gz
+    provides:
+      Time::Moment 0.42
+      Time::Moment::Adjusters 0.42
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.59
+      ExtUtils::ParseXS 3.18
+      Test::Fatal 0.006
+      Test::More 0.88
+      Test::Number::Delta 1.06
+      Test::Requires 0
+      Time::HiRes 0
+      XSLoader 0.02
+      perl 5.008001
+  TimeDate-2.30
+    pathname: G/GB/GBARR/TimeDate-2.30.tar.gz
+    provides:
+      Date::Format 2.24
+      Date::Format::Generic 2.24
+      Date::Language 1.10
+      Date::Language::Afar 0.99
+      Date::Language::Amharic 1.00
+      Date::Language::Austrian 1.01
+      Date::Language::Brazilian 1.01
+      Date::Language::Bulgarian 1.01
+      Date::Language::Chinese 1.00
+      Date::Language::Chinese_GB 1.01
+      Date::Language::Czech 1.01
+      Date::Language::Danish 1.01
+      Date::Language::Dutch 1.02
+      Date::Language::English 1.01
+      Date::Language::Finnish 1.01
+      Date::Language::French 1.04
+      Date::Language::Gedeo 0.99
+      Date::Language::German 1.02
+      Date::Language::Greek 1.00
+      Date::Language::Hungarian 1.01
+      Date::Language::Icelandic 1.01
+      Date::Language::Italian 1.01
+      Date::Language::Norwegian 1.01
+      Date::Language::Oromo 0.99
+      Date::Language::Romanian 1.01
+      Date::Language::Russian 1.01
+      Date::Language::Russian_cp1251 1.01
+      Date::Language::Russian_koi8r 1.01
+      Date::Language::Sidama 0.99
+      Date::Language::Somali 0.99
+      Date::Language::Spanish 1.00
+      Date::Language::Swedish 1.01
+      Date::Language::Tigrinya 1.00
+      Date::Language::TigrinyaEritrean 1.00
+      Date::Language::TigrinyaEthiopian 1.00
+      Date::Language::Turkish 1.0
+      Date::Parse 2.30
+      Time::Zone 2.24
+    requirements:
+      ExtUtils::MakeMaker 0
   Try-Tiny-0.28
     pathname: E/ET/ETHER/Try-Tiny-0.28.tar.gz
     provides:

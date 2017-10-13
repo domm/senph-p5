@@ -10,10 +10,12 @@ requires 'JSON::MaybeXS';
 requires 'Unicode::UTF8';
 requires 'Path::Tiny';
 requires 'Data::UUID';
+requires 'Time::Moment';
 
 requires 'MooseX::Storage';
 requires 'MooseX::Types::URI';
 requires 'MooseX::Types::Path::Tiny';
+requires 'MooseX::Types::Email';
 
 requires 'OX';
 requires 'Web::Request';

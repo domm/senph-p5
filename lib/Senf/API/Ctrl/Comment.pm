@@ -21,17 +21,17 @@ sub list {
 }
 
 sub create {
-    my ( $self, $req, $s, $t ) = @_;
+    my ( $self, $req, $site_ident, $topic_ident ) = @_;
 
-    my $site = $self->comment_model->load_site($s);
-    my $topic = $self->comment_model->load_topic($site, $t);
-warn $topic;
     my $args = {
         subject => $req->param('subject'),
         comment => $req->param('comment'),
+        user_name => $req->param('user_name'),
     };
 
-    $self->comment_model->create_comment($site, $topic, $args);
+    my $topic = $self->comment_model->load_topic($site_ident,$topic_ident);
+
+    $self->comment_model->create_comment($site_ident, $topic, $args);
 
     return $req->json_response($topic->pack);
 }

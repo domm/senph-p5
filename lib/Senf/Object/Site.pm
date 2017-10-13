@@ -36,12 +36,10 @@ has 'status' => (
     default=>'online'
 );
 
-sub load_topic {
-    my ($self, $ident) = @_;
+# settings:
+# allow_edit
+# require_approval
 
-    
-
-}
 
 
 __PACKAGE__->meta->make_immutable;
