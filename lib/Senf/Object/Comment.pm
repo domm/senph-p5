@@ -8,6 +8,8 @@ use MooseX::Storage;
 
 use MooseX::Types::Email qw(EmailAddress);
 use Time::Moment;
+use Digest::SHA1 qw(sha1_base64);
+use Time::HiRes qw(time);
 
 with Storage('format' => 'JSON', 'io' => 'AtomicFile');
 
@@ -37,16 +39,10 @@ has 'comments'=> (
 
 has 'created' => (
     is=>'ro',
-    isa=>'Str', # TODO some kind of date
-    required=>1, # TODO build/default
+    isa=>'Str', # TODO validate iso8601
     default => sub {
         return Time::Moment->now->to_string;
     }
-);
-
-has 'reply_to' => (
-    is=>'ro',
-    isa=>'Str',
 );
 
 has 'status' => (
@@ -64,8 +60,14 @@ has 'is_deleted' => (
 has 'secret' => (
     is=>'ro',
     isa=>'Str',
-    default=>'s3cr3t', # TODO random
+    lazy_build=>1,
 );
+sub _build_secret {
+    my $self = shift;
+    my $digest = sha1_base64(time, rand(10000), $$, $^T);
+    $digest =~ tr{/+}{_-};
+    return $digest;
+}
 
 # TODO format?
 
@@ -93,7 +95,12 @@ has 'user_email_is_verified' => (
 
 has 'user_email_verified_at' => (
     is=>'ro',
-    isa=>'Time::Moment'
+    isa=>'Str', # TODO validate iso8601
+);
+
+has 'user_email_verified_ip' => (
+    is=>'ro',
+    isa=>'Str',
 );
 
 __PACKAGE__->meta->make_immutable;

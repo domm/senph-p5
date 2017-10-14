@@ -22,14 +22,11 @@ router as {
 
     # API
     route '/api/comment/:site/:topic' => 'REST.comment_ctrl.topic'; # GET
-    route '/api/reply/:site/:topic/:reply_to_path/:reply_to_ident' => 'comment_ctrl.reply'; # POST
+    route '/api/comment/:site/:topic/:reply_to' => 'REST.comment_ctrl.reply'; # POST
 
     # called from mail, so has to be HTML (or init SPA?)
-    route '/publish/:site/:topic/:comment_path/:comment_ident/:comment_secret' => 'comment_ctrl.publish';
-    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/edit' => 'comment_ctrl.edit';
-    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/delete' => 'comment_ctrl.delete';
-
-
+    route '/publish/:site/:topic/:comment_ident/:comment_secret' => 'comment_ctrl.publish';
+    route '/delete/:site/:topic/:comment_ident/:comment_secret' => 'comment_ctrl.delete';
 
 };
 

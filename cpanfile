@@ -11,6 +11,7 @@ requires 'Unicode::UTF8';
 requires 'Path::Tiny';
 requires 'Data::UUID';
 requires 'Time::Moment';
+requires 'Digest::SHA1';
 
 requires 'MooseX::Storage';
 requires 'MooseX::Types::URI';

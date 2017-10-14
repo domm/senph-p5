@@ -34,7 +34,24 @@ sub topic_POST {
     return $req->json_response($topic);
 }
 
-sub reply {}
+sub reply_POST {
+    my ( $self, $req, $site_ident, $topic_ident, $comment_ident ) = @_;
+
+    my $args = {
+        subject => $req->param('subject'),
+        body => $req->param('body'),
+        user_name => $req->param('user_name'),
+    };
+
+    my $data =  $self->comment_model->create_reply($site_ident, $topic_ident, $comment_ident, $args);
+
+
+    my $topic = $self->comment_model->show_topic($site_ident, $topic_ident);
+    return $req->json_response($topic);
+}
+
+
+
 sub publish {}
 sub edit {}
 sub delete {}
