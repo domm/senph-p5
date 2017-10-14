@@ -4,6 +4,7 @@ use 5.026;
 # ABSTRACT: Just another OX
 
 use OX;
+use OX::RouteBuilder::REST;
 use Plack::Runner;
 use Log::Any qw($log);
 
@@ -19,11 +20,12 @@ router as {
 
     wrap 'Plack::Middleware::PrettyException';
 
-    route '/comments/:site/:topic' => 'comment_ctrl.list'; # GET
-    route '/comment/:site/:topic' => 'comment_ctrl.create'; # GET (show form) / POST
-    route '/reply/:site/:topic/:reply_to_path/:reply_to_ident' => 'comment_ctrl.reply'; # POST
+    # API
+    route '/api/comment/:site/:topic' => 'REST.comment_ctrl.topic'; # GET
+    route '/api/reply/:site/:topic/:reply_to_path/:reply_to_ident' => 'comment_ctrl.reply'; # POST
 
-    route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/publish' => 'comment_ctrl.publish';
+    # called from mail, so has to be HTML (or init SPA?)
+    route '/publish/:site/:topic/:comment_path/:comment_ident/:comment_secret' => 'comment_ctrl.publish';
     route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/edit' => 'comment_ctrl.edit';
     route '/hmm/:site/:topic/:comment_path/:comment_ident/:comment_secret/delete' => 'comment_ctrl.delete';
 

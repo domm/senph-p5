@@ -21,6 +21,8 @@ sub load_site {
     return $ident if ref($ident); # it's already an object
 
     my $site = Senf::Object::Site->load($self->storage->child($ident,'site.json')->stringify);
+
+    # TODO 403 exception if site is disabled?
     return $site;
 
 }
@@ -32,8 +34,40 @@ sub load_topic {
     my $site = $self->load_site($site_ident);
 
     my $topic = Senf::Object::Topic->load($self->storage->child($site->ident,'topics',$ident.'.json')->stringify);
-    return $topic;
+    # TODO 403 exception if topic is disabled?
+    return wantarray ? ($topic, $site) : $topic;
 }
+
+sub show_topic {
+    my ($self, $site_ident, $topic_ident) = @_;
+
+    my ($topic, $site) = $self->load_topic($site_ident, $topic_ident);
+
+    my %data = map { $_ => $topic->$_}  qw(ident url status);
+    my @comments = $self->walk_comments($topic);
+    $data{comments} = \@comments;
+
+    return \%data;
+}
+
+sub walk_comments {
+    my ($self, $topic) = @_;
+    my @list;
+    foreach my $comment ($topic->all_comments) {
+        my %comment = map { $_ => $comment->$_} qw (subject body created user_name user_email);
+        if ($comment->is_deleted) {
+            %comment = map { $_=>'deleted'} keys %comment;
+        }
+        next unless $comment->status eq 'online';
+        if ($comment->comment_count) {
+            my @replies = $self->walk_comments($comment);
+            $comment{comments} = \@replies;
+        }
+        push(@list, \%comment);
+    }
+    return @list;
+}
+
 
 sub create_comment {
     my ($self, $site_ident, $topic_ident, $comment_data) = @_;

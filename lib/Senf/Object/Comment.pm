@@ -17,10 +17,22 @@ has 'ident' => (
     required=>1,
 );
 
-has ['subject','comment'] => (
+has ['subject','body'] => (
     is=>'ro',
     isa=>'Str',
     required=>1,
+);
+
+has 'comments'=> (
+    is=>'ro',
+    isa=>'ArrayRef',
+    traits  => ['Array'],
+    default=>sub {[]},
+    handles => {
+            all_comments    => 'elements',
+            add_comment     => 'push',
+            comment_count  => 'count',
+        }
 );
 
 has 'created' => (
@@ -39,8 +51,14 @@ has 'reply_to' => (
 
 has 'status' => (
     is=>'ro',
-    isa=>'Str', # TODO enum(draft, pending, online, deleted)
+    isa=>'Str', # TODO enum(draft, pending, online)
     default=>'draft',
+);
+
+has 'is_deleted' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>0,
 );
 
 has 'secret' => (

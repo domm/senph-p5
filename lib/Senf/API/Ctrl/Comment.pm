@@ -11,29 +11,27 @@ has 'comment_model' => (
     required => 1,
 );
 
-sub list {
-    my ( $self, $req, $s, $t ) = @_;
+sub topic_GET {
+    my ( $self, $req, $site_ident, $topic_ident ) = @_;
 
-    my $site = $self->comment_model->load_site($s);
-    my $topic = $self->comment_model->load_topic($site, $t);
+    my $topic = $self->comment_model->show_topic($site_ident, $topic_ident);
 
-    return $req->json_response($topic->pack);
+    return $req->json_response($topic);
 }
 
-sub create {
+sub topic_POST {
     my ( $self, $req, $site_ident, $topic_ident ) = @_;
 
     my $args = {
         subject => $req->param('subject'),
-        comment => $req->param('comment'),
+        body => $req->param('body'),
         user_name => $req->param('user_name'),
     };
 
-    my $topic = $self->comment_model->load_topic($site_ident,$topic_ident);
+    $self->comment_model->create_comment($site_ident, $topic_ident, $args);
 
-    $self->comment_model->create_comment($site_ident, $topic, $args);
-
-    return $req->json_response($topic->pack);
+    my $topic = $self->comment_model->show_topic($site_ident, $topic_ident);
+    return $req->json_response($topic);
 }
 
 sub reply {}

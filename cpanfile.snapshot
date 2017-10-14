@@ -1937,6 +1937,22 @@ DISTRIBUTIONS
       namespace::autoclean 0
       strict 0
       warnings 0
+  OX-RouteBuilder-REST-0.003
+    pathname: D/DO/DOMM/OX-RouteBuilder-REST-0.003.tar.gz
+    provides:
+      OX::RouteBuilder::REST 0.003
+    requirements:
+      Module::Build 0.3601
+      Moose 0
+      OX 0
+      OX::RouteBuilder 0
+      Plack::Test 0
+      Test::More 0
+      Test::Path::Router 0
+      Try::Tiny 0
+      namespace::autoclean 0
+      strict 0
+      warnings 0
   POSIX-strftime-Compiler-0.42
     pathname: K/KA/KAZEBURO/POSIX-strftime-Compiler-0.42.tar.gz
     provides:
