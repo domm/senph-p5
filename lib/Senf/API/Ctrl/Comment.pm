@@ -26,6 +26,7 @@ sub topic_POST {
         subject => $req->param('subject'),
         body => $req->param('body'),
         user_name => $req->param('user_name'),
+        user_notify => $req->param('user_notify'),
     };
 
     $self->comment_model->create_comment($site_ident, $topic_ident, $args);
@@ -41,6 +42,7 @@ sub reply_POST {
         subject => $req->param('subject'),
         body => $req->param('body'),
         user_name => $req->param('user_name'),
+        user_notify => $req->param('user_notify'),
     };
 
     my $data =  $self->comment_model->create_reply($site_ident, $topic_ident, $comment_ident, $args);
@@ -50,13 +52,9 @@ sub reply_POST {
     return $req->json_response($topic);
 }
 
-
-
 sub publish {}
 sub edit {}
 sub delete {}
-
-
 
 __PACKAGE__->meta->make_immutable;
 

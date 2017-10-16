@@ -7,11 +7,16 @@ use Moose;
 use MooseX::Storage;
 
 use MooseX::Types::Email qw(EmailAddress);
+use Moose::Util::TypeConstraints;
 use Time::Moment;
 use Digest::SHA1 qw(sha1_base64);
 use Time::HiRes qw(time);
 
 with Storage('format' => 'JSON', 'io' => 'AtomicFile');
+
+enum 'SenfCommentStatus' => [qw(draft pending rejected online)];
+
+enum 'SenfCommentUserNotify' => [qw(none replies all)];
 
 has 'ident' => (
     is=>'ro',
@@ -47,7 +52,7 @@ has 'created' => (
 
 has 'status' => (
     is=>'ro',
-    isa=>'Str', # TODO enum(draft, pending, online)
+    isa=>'SenfCommentStatus',
     default=>'draft',
 );
 
@@ -84,7 +89,7 @@ has 'user_email' => (
 
 has 'user_notify' => (
     is=>'ro',
-    isa=>'Str', # TODO enum(none, replies, all)
+    isa=>'Maybe[SenfCommentUserNotify]',
 );
 
 has 'user_email_is_verified' => (
