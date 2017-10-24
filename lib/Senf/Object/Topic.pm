@@ -21,12 +21,6 @@ has 'url' => (
     required=>1,
 );
 
-has 'status' => (
-    is=>'ro',
-    isa=>'Str', # Enum (enabled, disabled)
-    required=>1,
-);
-
 has 'comments'=> (
     is=>'ro',
     isa=>'ArrayRef',
@@ -37,6 +31,30 @@ has 'comments'=> (
             add_comment     => 'push',
             comment_count  => 'count',
         }
+);
+
+has 'show_comments' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>1,
+);
+
+has 'allow_comments' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>1,
+);
+
+has 'require_approval' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>0,
+);
+
+has 'allow_edit' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>0,
 );
 
 __PACKAGE__->meta->make_immutable;

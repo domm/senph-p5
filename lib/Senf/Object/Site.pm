@@ -6,6 +6,7 @@ use 5.026;
 use Moose;
 use MooseX::Types::URI qw(Uri);
 use MooseX::Storage;
+use Moose::Util::TypeConstraints;
 
 with Storage('format' => 'JSON', 'io' => 'AtomicFile');
 
@@ -29,17 +30,28 @@ has 'name' => (
     required => 1,
 );
 
-has 'status' => (
+has 'show_comments' => (
     is=>'ro',
-    isa=>'Str', # TODO enum,
-    required=>1,
-    default=>'online'
+    isa=>'Bool',
+    default=>1,
 );
 
-# settings:
-# allow_edit
-# require_approval
+has 'allow_comments' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>1,
+);
 
+has 'require_approval' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>0,
+);
 
+has 'allow_edit' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>0,
+);
 
 __PACKAGE__->meta->make_immutable;

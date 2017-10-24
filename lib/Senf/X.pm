@@ -13,3 +13,13 @@ has [qw(http_status)] => (
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
+package Senf::X::Forbidden;
+use Moose;
+extends 'Senf::X';
+use Throwable::X -all;
+
+has '+http_status' => ( default => 403 );
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+

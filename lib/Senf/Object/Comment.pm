@@ -14,7 +14,7 @@ use Time::HiRes qw(time);
 
 with Storage('format' => 'JSON', 'io' => 'AtomicFile');
 
-enum 'SenfCommentStatus' => [qw(draft pending rejected online)];
+enum 'SenfCommentStatus' => [qw(pending rejected online)];
 
 enum 'SenfCommentUserNotify' => [qw(none replies all)];
 
@@ -53,7 +53,7 @@ has 'created' => (
 has 'status' => (
     is=>'ro',
     isa=>'SenfCommentStatus',
-    default=>'draft',
+    default=>'pending',
 );
 
 has 'is_deleted' => (

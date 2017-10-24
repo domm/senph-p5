@@ -59,7 +59,14 @@ sub show_topic {
 
     my ( $topic, $site ) = $self->load_topic( $site_ident, $topic_ident );
 
-    my %data = map { $_ => $topic->$_ } qw(ident url status);
+    if (!$topic->show_comments || !$site->show_comments) {
+        Senf::X::Forbidden->throw({
+            ident=>'show-comments-disabled',
+            message=>'Showing comments is disabled here',
+        });
+    }
+
+    my %data = map { $_ => $topic->$_ } qw(ident url);
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 
@@ -108,7 +115,22 @@ sub create_reply {
 sub _do_create {
     my ( $self, $site, $topic, $parent, $comment_data ) = @_;
 
+    if (!$topic->allow_comments || !$site->allow_comments) {
+        Senf::X::Forbidden->throw({
+            ident=>'create-comments-disabled',
+            message=>'New comments are not accepted here',
+        });
+    }
+
+    if ($topic->require_approval || $site->require_approval) {
+        $comment_data->{status} = 'pending';
+    }
+    else {
+        $comment_data->{status} = 'online';
+    }
+
     my $comment = Senf::Object::Comment->new( $comment_data->%* );
+
     push( $parent->comments->@*, $comment );
     $self->store_topic( $site, $topic );
 }
