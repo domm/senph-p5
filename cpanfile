@@ -28,3 +28,7 @@ requires 'Plack::Middleware::PrettyException';
 requires 'Web::Request::Role::JSON';
 requires 'Web::Request::Role::Response';
 
+requires 'Plack::Handler::Net::Async::HTTP::Server';
+requires 'Net::Async::HTTP';
+requires 'IO::Async::SSL';
+requires 'Router::Simple';

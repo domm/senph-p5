@@ -1,0 +1,9 @@
+
+
+http://techblog.net-a-porter.com/2014/03/asynchronous-web-services-with-psgi-and-ioasync/
+
+
+https://metacpan.org/pod/Router::Simple
+https://metacpan.org/pod/Future::AsyncAwait
+
+

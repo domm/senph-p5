@@ -24,6 +24,12 @@ my $c = container 'Senf' => as {
             lifecycle    => 'Singleton',
             dependencies => { comment_ctrl => '/API/Comment', }
         );
+        service 'api.async' => (
+            class        => 'Senf::API::Async',
+            lifecycle    => 'Singleton',
+            dependencies => { comment_ctrl => '/API/CommentA', loop=>'/Loop' }
+        );
+
     };
 
     container 'API' => as {
@@ -32,6 +38,12 @@ my $c = container 'Senf' => as {
             class        => 'Senf::API::Ctrl::Comment',
             dependencies => { comment_model => '/Model/Comment', }
         );
+                service 'CommentA' => (
+            lifecycle    => 'Singleton',
+            class        => 'Senf::API::Ctrl::CommentA',
+            dependencies => { comment_model => '/Model/Comment', loop=>'/Loop' }
+        );
+
     };
 
     container 'Model' => as {
@@ -42,7 +54,12 @@ my $c = container 'Senf' => as {
                 storage => literal( $config->load->{data_dir} ),
             }
         );
-    }
+    };
+
+    service 'Loop' => (
+        lifecycle => 'Singleton',
+        class     => 'IO::Async::Loop',
+    );
 
 };
 

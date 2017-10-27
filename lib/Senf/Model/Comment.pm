@@ -108,6 +108,13 @@ sub create_reply {
     my ( $topic, $site ) = $self->load_topic( $site_ident, $topic_ident );
     my $reply_to = $self->load_comment( $site, $topic, $reply_to_ident );
 
+    unless ($reply_to->status eq 'online') {
+        Senf::X::Forbidden->throw({
+            ident=>'cannot-reply-non-online-comment',
+            message=>"You cannot reply to a comment that's not online",
+        });
+    }
+
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
     $self->_do_create( $site, $topic, $reply_to, $comment_data );
 }
