@@ -5,6 +5,7 @@ use 5.026;
 
 use Moose;
 use MooseX::Types::Path::Tiny qw/Dir/;
+use Log::Any qw($log);
 
 has 'storage' => (
     is       => 'ro',
@@ -12,8 +13,6 @@ has 'storage' => (
     required => 1,
     coerce   => 1,
 );
-
-use Moose;
 
 sub load_site {
     my ( $self, $ident ) = @_;
@@ -99,6 +98,7 @@ sub create_comment {
 
     $comment_data->{ident} = $topic->comment_count;
     $self->_do_create( $site, $topic, $topic, $comment_data );
+    $log->infof("New comment create on %s", $topic->ident);
 }
 
 sub create_reply {

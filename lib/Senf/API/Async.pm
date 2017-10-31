@@ -2,8 +2,9 @@ package Senf::API::Async;
 use 5.026;
 use Moose;
 
-# ABSTRACT: a handroled async web server
+# ABSTRACT: a handrolled async web server
 
+use Plack::Builder;
 use Router::Simple;
 use Senf::API::Request;
 use Net::Async::HTTP::Server::PSGI;
@@ -28,7 +29,7 @@ sub run {
     $router->connect('/api/comment/:site/:topic', {controller => 'comment_ctrl', action => 'topic', rest=>1});
     $router->connect('/api/comment/:site/:topic/:reply_to', {controller => 'comment_ctrl', action => 'reply', rest=>1});
 
-    my $app = sub {
+    my $api = sub {
         my $env = shift;
         my $req = Senf::API::Request->new_from_env($env);
 
@@ -39,7 +40,7 @@ sub run {
                 $action.='_'.$req->method;
             }
             unless ($self->$ctrl->can($action)) {
-                # TODO HEAD requests?
+                # TODO HEAD requests? Or handle via Middleware::CORS?
                 return [405,[],[$req->method .' is not allowed on '.$env->{REQUEST_URI}]];
             }
             my $rv = $self->$ctrl->$action($req, $p);
@@ -49,6 +50,10 @@ sub run {
             return [404, [], ['not found']];
         }
     };
+
+    my $builder = Plack::Builder->new;
+    $builder->add_middleware('Plack::Middleware::PrettyException');
+    my $app = $builder->wrap($api);
 
     my $httpserver = Net::Async::HTTP::Server::PSGI->new(
         app => $app
