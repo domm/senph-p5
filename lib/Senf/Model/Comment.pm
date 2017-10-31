@@ -14,16 +14,32 @@ has 'storage' => (
     coerce   => 1,
 );
 
+has 'loop' => (
+    is=>'ro',
+    required=>1,
+);
+
+has 'http_client' => (
+    is=>'ro',
+    required=>1,
+);
+
 sub load_site {
     my ( $self, $ident ) = @_;
 
     return $ident if ref($ident);    # it's already an object
 
-    my $site = Senf::Object::Site->load(
-        $self->storage->child( $ident, 'site.json' )->stringify );
+    my $file = $self->storage->child( $ident, 'site.json' );
+    if (-e $file) {
+        my $site = Senf::Object::Site->load($file->stringify);
+        return $site;
+    }
 
-    # TODO 403 exception if site is disabled?
-    return $site;
+    Senf::X::NotFound->throw({
+        ident=>'site-not-found',
+        message=>'Site "%{site}s" not found',
+        site=>$ident,
+    });
 }
 
 sub load_topic {
@@ -32,9 +48,32 @@ sub load_topic {
     return $ident if ref($ident);    # it's already an object
     my $site = $self->load_site($site_ident);
 
+    my $file = $self->storage->child( $site->ident, 'topics', $ident . '.json' );
+    # the following should happen in a new find_or_create method
+    if (1==0 && !-e $file) {
+        my $future = $self->http_client->HEAD(
+            URI->new( "https://domm.plix.at/perl/2017_08_things_i_learned_at_european_perl_conference_2018_amsterdam.html" ),
+        )
+        ->on_done(sub {
+            my $res = shift;
+            # TODO create new topic-storage-file based on site
+            $log->infof("OK ".$res);
+        })
+        ->on_fail(sub {
+            my $err = shift;
+            Senf::X::NotFound->throw({
+                ident=>'invalid-topic',
+                message=>'Topic "%{topic}s" not available',
+                topic=>$ident,
+                site=>$site->ident,
+            });
+        });
+        $self->loop->await($future);
+    }
+
     my $topic = Senf::Object::Topic->load(
         $self->storage->child( $site->ident, 'topics', $ident . '.json' )
-            ->stringify );
+                ->stringify );
 
     # TODO 403 exception if topic is disabled?
     return wantarray ? ( $topic, $site ) : $topic;

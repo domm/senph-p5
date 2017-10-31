@@ -46,12 +46,6 @@ sub topic_POST {
         user_notify => $req->param('user_notify'),
     };
 
-    #my $loop = $req->env->{'io.async.loop'};
-    #    unless ($http) {
-    #        $http = Net::Async::HTTP->new();
-    #        $loop->add( $http );
-    #    }
-    # 
     #warn "start create ".time();
     #    my ( $response ) = $http->do_request(
     #        method=>'HEAD',

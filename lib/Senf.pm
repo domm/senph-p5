@@ -3,6 +3,8 @@ use 5.026;
 
 # ABSTRACT: simple comment system / disqus clone
 
+our $VERSION='0.001';
+
 use Moose;
 use Bread::Board;
 
@@ -27,7 +29,7 @@ my $c = container 'Senf' => as {
         service 'api.async' => (
             class        => 'Senf::API::Async',
             lifecycle    => 'Singleton',
-            dependencies => { comment_ctrl => '/API/CommentA', loop=>'/Loop' }
+            dependencies => { comment_ctrl => '/API/CommentA', loop=>'/Async/Loop' }
         );
 
     };
@@ -38,10 +40,10 @@ my $c = container 'Senf' => as {
             class        => 'Senf::API::Ctrl::Comment',
             dependencies => { comment_model => '/Model/Comment', }
         );
-                service 'CommentA' => (
+        service 'CommentA' => (
             lifecycle    => 'Singleton',
             class        => 'Senf::API::Ctrl::CommentA',
-            dependencies => { comment_model => '/Model/Comment', loop=>'/Loop' }
+            dependencies => { comment_model => '/Model/Comment', loop=>'/Async/Loop' }
         );
 
     };
@@ -52,14 +54,35 @@ my $c = container 'Senf' => as {
             class     => 'Senf::Model::Comment',
             dependencies => {
                 storage => literal( $config->load->{data_dir} ),
+                http_client => '/Async/HTTPClient',
+                loop=>'/Async/Loop'
             }
         );
     };
 
-    service 'Loop' => (
-        lifecycle => 'Singleton',
-        class     => 'IO::Async::Loop',
-    );
+    container 'Async' => as {
+        service 'Loop' => (
+            lifecycle => 'Singleton',
+            class     => 'IO::Async::Loop',
+        );
+        service 'HTTPClient' => (
+            lifecycle => 'Singleton',
+            class => 'Net::Async::HTTP',
+            dependencies=>{
+                loop=>'Loop',
+            },
+            block => sub {
+                my $s           = shift;
+                my $loop = $s->param('loop');
+                my $http = Net::Async::HTTP->new(
+                    user_agent=>__PACKAGE__.'/'.$VERSION,
+                    timeout=>2,
+                );
+                $loop->add( $http );
+                return $http;
+            },
+        );
+    };
 
 };
 
