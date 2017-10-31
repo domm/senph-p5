@@ -30,25 +30,37 @@ has 'name' => (
     required => 1,
 );
 
-has 'show_comments' => (
+has 'default_show_comments' => (
     is=>'ro',
     isa=>'Bool',
     default=>1,
 );
 
-has 'allow_comments' => (
+has 'default_allow_comments' => (
     is=>'ro',
     isa=>'Bool',
     default=>1,
 );
 
-has 'require_approval' => (
+has 'default_require_approval' => (
     is=>'ro',
     isa=>'Bool',
     default=>0,
 );
 
-has 'allow_edit' => (
+has 'global_show_comments' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>1,
+);
+
+has 'global_allow_comments' => (
+    is=>'ro',
+    isa=>'Bool',
+    default=>1,
+);
+
+has 'global_require_approval' => (
     is=>'ro',
     isa=>'Bool',
     default=>0,
