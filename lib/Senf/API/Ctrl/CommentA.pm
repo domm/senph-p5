@@ -4,6 +4,7 @@ use 5.026;
 # ABSTRACT: API Controller for comment
 
 use Moose;
+use URI::Escape;
 
 has 'comment_model' => (
     is       => 'ro',
@@ -11,34 +12,17 @@ has 'comment_model' => (
     required => 1,
 );
 
-has 'loop' => (
-    is=>'ro',
-    isa=>'IO::Async::Loop',
-    required=>1,
-);
-
-my $cnt=1;
-my $ping=0;
-use IO::Async::Timer::Periodic;
-use Net::Async::HTTP;
-
 sub topic_GET {
     my ( $self, $req, $args ) = @_;
 
-    $self->loop->add( IO::Async::Timer::Countdown->new(
-       delay => 2,
-       on_expire => sub { print "2 seconds have passed ".$cnt++."\n" },
-    )->start );
-
-    my $topic = $self->comment_model->show_topic($args->{site}, $args->{topic});
+    my $topic = $self->comment_model->show_topic(uri_unescape($args->{topic}));
     return $req->json_response($topic);
 }
 
-my $http;
-
 sub topic_POST {
-    my ( $self, $req, $args ) = @_;
+    my ( $self, $req, $rawargs ) = @_;
 
+    my $args = $self->_unpack_args($rawargs);
     my $create = {
         subject => $req->param('subject'),
         body => $req->param('body'),
@@ -60,8 +44,9 @@ warn "done create ".time();
 }
 
 sub reply_POST {
-    my ( $self, $req, $args ) = @_;
+    my ( $self, $req, $rawargs ) = @_;
 
+    my $args = $self->_unpack_args($rawargs);
     my $create = {
         subject => $req->param('subject'),
         body => $req->param('body'),

@@ -14,13 +14,6 @@ with Storage('format' => 'JSON', 'io' => 'AtomicFile');
 # maybe ditch MooseX::Storage?
 # maybe add site as an attribute to topic? so we don't have to pass two objects around?
 
-
-has 'ident' => (
-    is=>'ro',
-    isa=>'Str',
-    required=>1,
-);
-
 has 'url' => (
     is  => 'ro',
     isa => 'Str', # Uri,

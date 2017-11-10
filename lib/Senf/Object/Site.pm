@@ -10,12 +10,6 @@ use Moose::Util::TypeConstraints;
 
 with Storage('format' => 'JSON', 'io' => 'AtomicFile');
 
-has 'ident' => (
-    is=>'ro',
-    isa=>'Str',
-    required=>1,
-);
-
 has 'url' => (
     is  => 'ro',
     isa => 'Str',

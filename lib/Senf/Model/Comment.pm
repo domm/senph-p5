@@ -7,82 +7,16 @@ use Moose;
 use MooseX::Types::Path::Tiny qw/Dir/;
 use Log::Any qw($log);
 
-has 'storage' => (
+has 'store' => (
     is       => 'ro',
-    isa      => Dir,
+    isa      => 'Senf::Store',
     required => 1,
-    coerce   => 1,
 );
-
-has 'loop' => (
-    is=>'ro',
-    required=>1,
-);
-
-has 'http_client' => (
-    is=>'ro',
-    required=>1,
-);
-
-sub load_site {
-    my ( $self, $ident ) = @_;
-
-    return $ident if ref($ident);    # it's already an object
-
-    my $file = $self->storage->child( $ident, 'site.json' );
-    if (-e $file) {
-        my $site = Senf::Object::Site->load($file->stringify);
-        return $site;
-    }
-
-    Senf::X::NotFound->throw({
-        ident=>'site-not-found',
-        message=>'Site "%{site}s" not found',
-        site=>$ident,
-    });
-}
-
-sub load_topic {
-    my ( $self, $site_ident, $ident ) = @_;
-
-    return $ident if ref($ident);    # it's already an object
-    my $site = $self->load_site($site_ident);
-
-    my $file = $self->storage->child( $site->ident, 'topics', $ident . '.json' );
-    # the following should happen in a new find_or_create method
-    if (1==0 && !-e $file) {
-        my $future = $self->http_client->HEAD(
-            URI->new( "https://domm.plix.at/perl/2017_08_things_i_learned_at_european_perl_conference_2018_amsterdam.html" ),
-        )
-        ->on_done(sub {
-            my $res = shift;
-            # TODO create new topic-storage-file based on site
-            $log->infof("OK ".$res);
-        })
-        ->on_fail(sub {
-            my $err = shift;
-            Senf::X::NotFound->throw({
-                ident=>'invalid-topic',
-                message=>'Topic "%{topic}s" not available',
-                topic=>$ident,
-                site=>$site->ident,
-            });
-        });
-        $self->loop->await($future);
-    }
-
-    my $topic = Senf::Object::Topic->load(
-        $self->storage->child( $site->ident, 'topics', $ident . '.json' )
-                ->stringify );
-
-    # TODO 403 exception if topic is disabled?
-    return wantarray ? ( $topic, $site ) : $topic;
-}
 
 sub load_comment {
-    my ( $self, $site_ident, $topic_ident, $comment_ident ) = @_;
+    my ( $self, $topic_ident, $comment_ident ) = @_;
 
-    my $topic = $self->load_topic( $site_ident, $topic_ident );
+    my $topic = $self->load_topic( $topic_ident );
 
     my $comment;
     my @path = grep {/^\d+$/} split( /\./, $comment_ident );
@@ -93,18 +27,19 @@ sub load_comment {
 }
 
 sub show_topic {
-    my ( $self, $site_ident, $topic_ident ) = @_;
+    my ( $self, $ident ) = @_;
 
-    my ( $topic, $site ) = $self->load_topic( $site_ident, $topic_ident );
+    my $site = $self->store->load_site($ident);
+    my $topic = $self->store->load_topic( $ident );
 
-    if (!$topic->show_comments || !$site->show_comments) {
+    if (!$topic->show_comments || !$site->global_show_comments) {
         Senf::X::Forbidden->throw({
             ident=>'show-comments-disabled',
             message=>'Showing comments is disabled here',
         });
     }
 
-    my %data = map { $_ => $topic->$_ } qw(ident url);
+    my %data = map { $_ => $topic->$_ } qw(url);
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 

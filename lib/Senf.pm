@@ -53,9 +53,19 @@ my $c = container 'Senf' => as {
             lifecycle => 'Singleton',
             class     => 'Senf::Model::Comment',
             dependencies => {
-                storage => literal( $config->load->{data_dir} ),
+                store => '/Store/File',
+            }
+        );
+    };
+
+    container 'Store' => as {
+        service 'File' => (
+            lifecycle => 'Singleton',
+            class     => 'Senf::Store',
+            dependencies => {
+                basedir => literal( $config->load->{data_dir} ),
+                loop=>'/Async/Loop',
                 http_client => '/Async/HTTPClient',
-                loop=>'/Async/Loop'
             }
         );
     };
