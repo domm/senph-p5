@@ -66,13 +66,14 @@ sub walk_comments {
 }
 
 sub create_comment {
-    my ( $self, $site_ident, $topic_ident, $comment_data ) = @_;
+    my ( $self, $topic_url, $comment_data ) = @_;
 
-    my ( $topic, $site ) = $self->load_topic( $site_ident, $topic_ident );
+    my $site = $self->store->load_site($topic_url);
+    my $topic = $self->store->load_topic( $topic_url );
 
     $comment_data->{ident} = $topic->comment_count;
     $self->_do_create( $site, $topic, $topic, $comment_data );
-    $log->infof("New comment create on %s", $topic->ident);
+    $log->infof("New comment create on %s", $topic->url);
 }
 
 sub create_reply {
@@ -96,14 +97,14 @@ sub create_reply {
 sub _do_create {
     my ( $self, $site, $topic, $parent, $comment_data ) = @_;
 
-    if (!$topic->allow_comments || !$site->allow_comments) {
+    if (!$topic->allow_comments || !$site->global_allow_comments) {
         Senf::X::Forbidden->throw({
             ident=>'create-comments-disabled',
             message=>'New comments are not accepted here',
         });
     }
 
-    if ($topic->require_approval || $site->require_approval) {
+    if ($topic->require_approval || $site->global_require_approval) {
         $comment_data->{status} = 'pending';
     }
     else {
@@ -113,16 +114,7 @@ sub _do_create {
     my $comment = Senf::Object::Comment->new( $comment_data->%* );
 
     push( $parent->comments->@*, $comment );
-    $self->store_topic( $site, $topic );
-}
-
-sub store_topic {
-    my ( $self, $site, $topic ) = @_;
-
-    $topic->store(
-        $self->storage->child( $site->ident, 'topics',
-            $topic->ident . '.json' )->stringify
-    );
+    $self->store->store_topic( $topic );
 }
 
 __PACKAGE__->meta->make_immutable;

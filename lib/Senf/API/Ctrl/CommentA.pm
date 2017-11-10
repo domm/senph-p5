@@ -20,9 +20,9 @@ sub topic_GET {
 }
 
 sub topic_POST {
-    my ( $self, $req, $rawargs ) = @_;
+    my ( $self, $req, $args ) = @_;
 
-    my $args = $self->_unpack_args($rawargs);
+    my $topic = uri_unescape($args->{topic});
     my $create = {
         subject => $req->param('subject'),
         body => $req->param('body'),
@@ -30,17 +30,10 @@ sub topic_POST {
         user_notify => $req->param('user_notify'),
     };
 
-    #warn "start create ".time();
-    #    my ( $response ) = $http->do_request(
-    #        method=>'HEAD',
-    #        uri => URI->new( "https://domm.plix.at/perl/2017_08_things_i_learned_at_european_perl_conference_2018_amsterdam.html" ),
-    #    )->get;
-    #    warn $response->as_string;
-    $self->comment_model->create_comment($args->{site}, $args->{topic}, $create);
-warn "done create ".time();
+    $self->comment_model->create_comment($topic, $create);
 
-    my $topic = $self->comment_model->show_topic($args->{site}, $args->{topic});
-    return $req->json_response($topic);
+    my $data = $self->comment_model->show_topic($topic);
+    return $req->json_response($data);
 }
 
 sub reply_POST {

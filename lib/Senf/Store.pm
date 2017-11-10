@@ -52,7 +52,6 @@ sub load_topic {
 
     if (-e $file) {
         return Senf::Object::Topic->load($file->stringify);
-
     }
     else {
         my $topic;
@@ -63,7 +62,6 @@ sub load_topic {
             my $res = shift;
             if ($res->code == 200) {
                 my $site = $self->load_site($ident);
-                use Data::Dumper; $Data::Dumper::Maxdepth=3;$Data::Dumper::Sortkeys=1;warn Data::Dumper::Dumper $site;
 
                 $topic = Senf::Object::Topic->new(
                     url=>$ident,
@@ -71,8 +69,7 @@ sub load_topic {
                     allow_comments=>$site->default_allow_comments,
                     require_approval=>$site->default_require_approval,
                 );
-                $file->parent->mkpath;
-                $topic->store($file->stringify);
+                $self->store_topic($topic);
                 $log->infof("New topic created: %s", $topic->url);
             }
             else {
@@ -109,7 +106,13 @@ sub load_topic {
 
 sub load_comment {}
 
-sub store_topic {}
+sub store_topic {
+    my ( $self, $topic ) = @_;
+
+    my $file = $self->basedir->child( $self->_topic_path($topic->url) );
+    $file->parent->mkpath;
+    $topic->store($file->stringify);
+}
 
 sub _topic_path {
     my ($self, $uri) = @_;
