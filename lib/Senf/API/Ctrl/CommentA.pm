@@ -37,9 +37,9 @@ sub topic_POST {
 }
 
 sub reply_POST {
-    my ( $self, $req, $rawargs ) = @_;
+    my ( $self, $req, $args) = @_;
 
-    my $args = $self->_unpack_args($rawargs);
+    my $topic = uri_unescape($args->{topic});
     my $create = {
         subject => $req->param('subject'),
         body => $req->param('body'),
@@ -47,11 +47,10 @@ sub reply_POST {
         user_notify => $req->param('user_notify'),
     };
 
-    $self->comment_model->create_reply($args->{site}, $args->{topic}, $args->{comment}, $create);
+    $self->comment_model->create_reply($topic, $args->{reply_to}, $create);
 
-
-    my $topic = $self->comment_model->show_topic($args->{site}, $args->{topic});
-    return $req->json_response($topic);
+    my $data = $self->comment_model->show_topic($topic);
+    return $req->json_response($data);
 }
 
 sub publish {}

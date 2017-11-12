@@ -104,7 +104,18 @@ sub load_topic {
     }
 }
 
-sub load_comment {}
+sub load_comment {
+    my ( $self, $topic_ident, $comment_ident ) = @_;
+
+    my $topic = $self->load_topic( $topic_ident );
+
+    my $comment;
+    my @path = grep {/^\d+$/} split( /\./, $comment_ident );
+    my $path = join( '->comments->', map { '[' . $_ . ']' } @path );  # oida!
+    my $loder = '$comment = $topic->comments->' . $path;              # oida!!
+    eval $loder;    # oida!!!
+    return $comment;
+}
 
 sub store_topic {
     my ( $self, $topic ) = @_;

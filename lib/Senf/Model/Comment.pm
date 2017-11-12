@@ -13,19 +13,6 @@ has 'store' => (
     required => 1,
 );
 
-sub load_comment {
-    my ( $self, $topic_ident, $comment_ident ) = @_;
-
-    my $topic = $self->load_topic( $topic_ident );
-
-    my $comment;
-    my @path = grep {/^\d+$/} split( /\./, $comment_ident );
-    my $path = join( '->comments->', map { '[' . $_ . ']' } @path );  # oida!
-    my $loder = '$comment = $topic->comments->' . $path;              # oida!!
-    eval $loder;    # oida!!!
-    return $comment;
-}
-
 sub show_topic {
     my ( $self, $ident ) = @_;
 
@@ -51,7 +38,7 @@ sub walk_comments {
     my @list;
     foreach my $comment ( $topic->all_comments ) {
         my %comment = map { $_ => $comment->$_ }
-            qw (subject body created user_name user_email);
+            qw (subject body created user_name user_email ident);
         if ( $comment->is_deleted ) {
             %comment = map { $_ => 'deleted' } keys %comment;
         }
@@ -77,11 +64,11 @@ sub create_comment {
 }
 
 sub create_reply {
-    my ( $self, $site_ident, $topic_ident, $reply_to_ident, $comment_data ) =
-        @_;
+    my ( $self, $topic_url, $reply_to_ident, $comment_data ) = @_;
 
-    my ( $topic, $site ) = $self->load_topic( $site_ident, $topic_ident );
-    my $reply_to = $self->load_comment( $site, $topic, $reply_to_ident );
+    my $site = $self->store->load_site($topic_url);
+    my $topic = $self->store->load_topic( $topic_url );
+    my $reply_to = $self->store->load_comment( $topic, $reply_to_ident );
 
     unless ($reply_to->status eq 'online') {
         Senf::X::Forbidden->throw({

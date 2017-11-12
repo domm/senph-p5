@@ -25,19 +25,6 @@ has 'loop' => (
 sub run {
     my $self = shift;
 
-=pod
-
-/api/comment/domm.plix.at/perl%2Fsome-article.html
-/api/comment/domm.plix.at/perl%2Fsome-article.html/5.2.3
-/api/comment/https%3A%2F%2Fdomm.plix.at%2Fperl%2Fsome-article.html
-
-simpler, nicer, use this:
-/api/comment/get?url=https%3A%2F%2Fdomm.plix.at%2Fperl%2Fsome-article.html
-/api/comment/post?url=https%3A%2F%2Fdomm.plix.at%2Fperl%2Fsome-article.html&subject=...
-/api/comment/reply?url=https%3A%2F%2Fdomm.plix.at%2Fperl%2Fsome-article.html&reply_to=1.3&subject=...
-
-=cut
-
     my $router = Router::Simple->new();
     $router->connect('/api/comment/:topic', {controller => 'comment_ctrl', action => 'topic', rest=>1});
     $router->connect('/api/comment/:topic/:reply_to', {controller => 'comment_ctrl', action => 'reply', rest=>1});
@@ -75,7 +62,7 @@ simpler, nicer, use this:
     $self->loop->add( $httpserver );
 
     $httpserver->listen(
-        addr => { family   => "inet",socktype => "stream", port => 8080 },
+        addr => { family   => "inet",socktype => "stream", port => $ENV{SENF_PORT} || 8080 },
         on_listen_error => sub { die "Cannot listen - $_[-1]\n" },
     );
 
