@@ -11,13 +11,12 @@ has [qw(http_status)] => (
 );
 
 has [qw(site topic)] => (
-    is      => 'ro',
-    traits  => [Payload],
+    is     => 'ro',
+    traits => [Payload],
 );
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
-
 
 package Senf::X::Forbidden;
 use Moose;
@@ -28,7 +27,6 @@ has '+http_status' => ( default => 403 );
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
-
 
 package Senf::X::NotFound;
 use Moose;

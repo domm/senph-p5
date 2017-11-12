@@ -3,7 +3,7 @@ use 5.026;
 
 # ABSTRACT: simple comment system / disqus clone
 
-our $VERSION='0.001';
+our $VERSION = '0.001';
 
 use Moose;
 use Bread::Board;
@@ -24,7 +24,10 @@ my $c = container 'Senf' => as {
         service 'senf.pl' => (
             class        => 'Senf::API::AsyncPSGI',
             lifecycle    => 'Singleton',
-            dependencies => { comment_ctrl => '/Controller/Comment', loop=>'/Async/Loop' }
+            dependencies => {
+                comment_ctrl => '/Controller/Comment',
+                loop         => '/Async/Loop'
+            }
         );
     };
 
@@ -38,21 +41,19 @@ my $c = container 'Senf' => as {
 
     container 'Model' => as {
         service 'Comment' => (
-            lifecycle => 'Singleton',
-            class     => 'Senf::Model::Comment',
-            dependencies => {
-                store => '/Store/File',
-            }
+            lifecycle    => 'Singleton',
+            class        => 'Senf::Model::Comment',
+            dependencies => { store => '/Store/File', }
         );
     };
 
     container 'Store' => as {
         service 'File' => (
-            lifecycle => 'Singleton',
-            class     => 'Senf::Store',
+            lifecycle    => 'Singleton',
+            class        => 'Senf::Store',
             dependencies => {
-                basedir => literal( $config->load->{data_dir} ),
-                loop=>'/Async/Loop',
+                basedir     => literal( $config->load->{data_dir} ),
+                loop        => '/Async/Loop',
                 http_client => '/Async/HTTPClient',
             }
         );
@@ -64,19 +65,17 @@ my $c = container 'Senf' => as {
             class     => 'IO::Async::Loop',
         );
         service 'HTTPClient' => (
-            lifecycle => 'Singleton',
-            class => 'Net::Async::HTTP',
-            dependencies=>{
-                loop=>'Loop',
-            },
-            block => sub {
-                my $s           = shift;
+            lifecycle    => 'Singleton',
+            class        => 'Net::Async::HTTP',
+            dependencies => { loop => 'Loop', },
+            block        => sub {
+                my $s    = shift;
                 my $loop = $s->param('loop');
                 my $http = Net::Async::HTTP->new(
-                    user_agent=>__PACKAGE__.'/'.$VERSION,
-                    timeout=>2,
+                    user_agent => __PACKAGE__ . '/' . $VERSION,
+                    timeout    => 2,
                 );
-                $loop->add( $http );
+                $loop->add($http);
                 return $http;
             },
         );

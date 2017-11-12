@@ -16,14 +16,15 @@ has 'store' => (
 sub show_topic {
     my ( $self, $ident ) = @_;
 
-    my $site = $self->store->load_site($ident);
-    my $topic = $self->store->load_topic( $ident );
+    my $site  = $self->store->load_site($ident);
+    my $topic = $self->store->load_topic($ident);
 
-    if (!$topic->show_comments || !$site->global_show_comments) {
-        Senf::X::Forbidden->throw({
-            ident=>'show-comments-disabled',
-            message=>'Showing comments is disabled here',
-        });
+    if ( !$topic->show_comments || !$site->global_show_comments ) {
+        Senf::X::Forbidden->throw(
+            {   ident   => 'show-comments-disabled',
+                message => 'Showing comments is disabled here',
+            }
+        );
     }
 
     my %data = map { $_ => $topic->$_ } qw(url);
@@ -55,26 +56,27 @@ sub walk_comments {
 sub create_comment {
     my ( $self, $topic_url, $comment_data ) = @_;
 
-    my $site = $self->store->load_site($topic_url);
-    my $topic = $self->store->load_topic( $topic_url );
+    my $site  = $self->store->load_site($topic_url);
+    my $topic = $self->store->load_topic($topic_url);
 
     $comment_data->{ident} = $topic->comment_count;
     $self->_do_create( $site, $topic, $topic, $comment_data );
-    $log->infof("New comment create on %s", $topic->url);
+    $log->infof( "New comment create on %s", $topic->url );
 }
 
 sub create_reply {
     my ( $self, $topic_url, $reply_to_ident, $comment_data ) = @_;
 
-    my $site = $self->store->load_site($topic_url);
-    my $topic = $self->store->load_topic( $topic_url );
+    my $site     = $self->store->load_site($topic_url);
+    my $topic    = $self->store->load_topic($topic_url);
     my $reply_to = $self->store->load_comment( $topic, $reply_to_ident );
 
-    unless ($reply_to->status eq 'online') {
-        Senf::X::Forbidden->throw({
-            ident=>'cannot-reply-non-online-comment',
-            message=>"You cannot reply to a comment that's not online",
-        });
+    unless ( $reply_to->status eq 'online' ) {
+        Senf::X::Forbidden->throw(
+            {   ident   => 'cannot-reply-non-online-comment',
+                message => "You cannot reply to a comment that's not online",
+            }
+        );
     }
 
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
@@ -84,14 +86,15 @@ sub create_reply {
 sub _do_create {
     my ( $self, $site, $topic, $parent, $comment_data ) = @_;
 
-    if (!$topic->allow_comments || !$site->global_allow_comments) {
-        Senf::X::Forbidden->throw({
-            ident=>'create-comments-disabled',
-            message=>'New comments are not accepted here',
-        });
+    if ( !$topic->allow_comments || !$site->global_allow_comments ) {
+        Senf::X::Forbidden->throw(
+            {   ident   => 'create-comments-disabled',
+                message => 'New comments are not accepted here',
+            }
+        );
     }
 
-    if ($topic->require_approval || $site->global_require_approval) {
+    if ( $topic->require_approval || $site->global_require_approval ) {
         $comment_data->{status} = 'pending';
     }
     else {
@@ -101,7 +104,7 @@ sub _do_create {
     my $comment = Senf::Object::Comment->new( $comment_data->%* );
 
     push( $parent->comments->@*, $comment );
-    $self->store->store_topic( $topic );
+    $self->store->store_topic($topic);
 }
 
 __PACKAGE__->meta->make_immutable;

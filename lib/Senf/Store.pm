@@ -17,13 +17,13 @@ has 'basedir' => (
 );
 
 has 'loop' => (
-    is=>'ro',
-    required=>1,
+    is       => 'ro',
+    required => 1,
 );
 
 has 'http_client' => (
-    is=>'ro',
-    required=>1,
+    is       => 'ro',
+    required => 1,
 );
 
 sub load_site {
@@ -32,15 +32,16 @@ sub load_site {
     return $ident if blessed($ident) && $ident->isa('Senf::Object::Site');
 
     my $file = $self->basedir->child( $self->_site_path($ident) );
-    if (-e $file) {
-        return Senf::Object::Site->load($file->stringify);
+    if ( -e $file ) {
+        return Senf::Object::Site->load( $file->stringify );
     }
 
-    Senf::X::NotFound->throw({
-        ident=>'site-not-found',
-        message=>'Site "%{site}s" not found',
-        site=>$ident,
-    });
+    Senf::X::NotFound->throw(
+        {   ident   => 'site-not-found',
+            message => 'Site "%{site}s" not found',
+            site    => $ident,
+        }
+    );
 }
 
 sub load_topic {
@@ -50,64 +51,69 @@ sub load_topic {
 
     my $file = $self->basedir->child( $self->_topic_path($ident) );
 
-    if (-e $file) {
-        return Senf::Object::Topic->load($file->stringify);
+    if ( -e $file ) {
+        return Senf::Object::Topic->load( $file->stringify );
     }
     else {
         my $topic;
-        my $future = $self->http_client->HEAD(
-            URI->new( $ident )
-        )
-        ->on_done(sub {
-            my $res = shift;
-            if ($res->code == 200) {
-                my $site = $self->load_site($ident);
+        my $future = $self->http_client->HEAD( URI->new($ident) )->on_done(
+            sub {
+                my $res = shift;
+                if ( $res->code == 200 ) {
+                    my $site = $self->load_site($ident);
 
-                $topic = Senf::Object::Topic->new(
-                    url=>$ident,
-                    show_comments=>$site->default_show_comments,
-                    allow_comments=>$site->default_allow_comments,
-                    require_approval=>$site->default_require_approval,
-                );
-                $self->store_topic($topic);
-                $log->infof("New topic created: %s", $topic->url);
+                    $topic = Senf::Object::Topic->new(
+                        url              => $ident,
+                        show_comments    => $site->default_show_comments,
+                        allow_comments   => $site->default_allow_comments,
+                        require_approval => $site->default_require_approval,
+                    );
+                    $self->store_topic($topic);
+                    $log->infof( "New topic created: %s", $topic->url );
+                }
+                else {
+                    # TODO this X seems to be caught by Future/IO::Async and then passed on as a string
+                    Senf::X::NotFound->throw(
+                        {   ident   => 'invalid-topic',
+                            message => 'Topic "%{topic}s" not available',
+                            topic   => $ident,
+                        }
+                    );
+                }
             }
-            else {
-                # TODO this X seems to be caught by Future/IO::Async and then passed on as a string
-                Senf::X::NotFound->throw({
-                    ident=>'invalid-topic',
-                    message=>'Topic "%{topic}s" not available',
-                    topic=>$ident,
-                });
-            }
-        })
-        ->on_fail(sub {
-            my $err = shift;
+            )->on_fail(
+            sub {
+                my $err = shift;
+
                 # TODO this X kills the server..
-                Senf::X::NotFound->throw({
-                    ident=>'site-not-reachable',
-                    message=>'Cannot contact "%{topic}s" to validate topic',
-                    topic=>$ident,
-                    http_status=>500,
-                });
-        });
+                Senf::X::NotFound->throw(
+                    {   ident => 'site-not-reachable',
+                        message =>
+                            'Cannot contact "%{topic}s" to validate topic',
+                        topic       => $ident,
+                        http_status => 500,
+                    }
+                );
+            }
+            );
         $self->loop->await($future);
         return $topic if $topic;
 
         # TODO not sure how to reach this X
-        Senf::X->throw({
-            ident=>'cannot-create-topic',
-            message=>'Topic %{topic}s could not be created',
-            topic=>$ident,
-            http_status=>500,
-        });
+        Senf::X->throw(
+            {   ident       => 'cannot-create-topic',
+                message     => 'Topic %{topic}s could not be created',
+                topic       => $ident,
+                http_status => 500,
+            }
+        );
     }
 }
 
 sub load_comment {
     my ( $self, $topic_ident, $comment_ident ) = @_;
 
-    my $topic = $self->load_topic( $topic_ident );
+    my $topic = $self->load_topic($topic_ident);
 
     my $comment;
     my @path = grep {/^\d+$/} split( /\./, $comment_ident );
@@ -120,26 +126,26 @@ sub load_comment {
 sub store_topic {
     my ( $self, $topic ) = @_;
 
-    my $file = $self->basedir->child( $self->_topic_path($topic->url) );
+    my $file = $self->basedir->child( $self->_topic_path( $topic->url ) );
     $file->parent->mkpath;
-    $topic->store($file->stringify);
+    $topic->store( $file->stringify );
 }
 
 sub _topic_path {
-    my ($self, $uri) = @_;
+    my ( $self, $uri ) = @_;
 
     $uri = URI->new($uri) unless blessed($uri) && $uri->isa('URI');
 
-    my $sha1 = sha1_hex($uri->path);
-    my @path = $sha1=~/^(.{2})(.{2})(.*)$/;
-    return join('/',$uri->host,'topics',@path).'.json';
+    my $sha1 = sha1_hex( $uri->path );
+    my @path = $sha1 =~ /^(.{2})(.{2})(.*)$/;
+    return join( '/', $uri->host, 'topics', @path ) . '.json';
 }
 
 sub _site_path {
-    my ($self, $uri) = @_;
+    my ( $self, $uri ) = @_;
 
     $uri = URI->new($uri) unless blessed($uri) && $uri->isa('URI');
-    return join('/',$uri->host,'site.json');
+    return join( '/', $uri->host, 'site.json' );
 }
 
 __PACKAGE__->meta->make_immutable;
