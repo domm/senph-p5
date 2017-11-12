@@ -1,4 +1,4 @@
-package Senf::API::Async;
+package Senf::API::AsyncPSGI;
 use 5.026;
 use Moose;
 

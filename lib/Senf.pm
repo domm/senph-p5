@@ -21,17 +21,11 @@ my $config = Config::ZOMG->new( name => "senf", path => "etc" );
 
 my $c = container 'Senf' => as {
     container 'App' => as {
-        service 'api.psgi' => (
-            class        => 'Senf::API::OX',
-            lifecycle    => 'Singleton',
-            dependencies => { comment_ctrl => '/API/Comment', }
-        );
-        service 'api.async' => (
-            class        => 'Senf::API::Async',
+        service 'senf.pl' => (
+            class        => 'Senf::API::AsyncPSGI',
             lifecycle    => 'Singleton',
             dependencies => { comment_ctrl => '/API/CommentA', loop=>'/Async/Loop' }
         );
-
     };
 
     container 'API' => as {

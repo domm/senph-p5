@@ -18,8 +18,6 @@ requires 'MooseX::Types::URI';
 requires 'MooseX::Types::Path::Tiny';
 requires 'MooseX::Types::Email';
 
-requires 'OX';
-requires 'OX::RouteBuilder::REST';
 requires 'Web::Request';
 requires 'Plack';
 requires 'Plack::Handler::Starman';
