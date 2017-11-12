@@ -24,22 +24,16 @@ my $c = container 'Senf' => as {
         service 'senf.pl' => (
             class        => 'Senf::API::AsyncPSGI',
             lifecycle    => 'Singleton',
-            dependencies => { comment_ctrl => '/API/CommentA', loop=>'/Async/Loop' }
+            dependencies => { comment_ctrl => '/Controller/Comment', loop=>'/Async/Loop' }
         );
     };
 
-    container 'API' => as {
+    container 'Controller' => as {
         service 'Comment' => (
             lifecycle    => 'Singleton',
             class        => 'Senf::API::Ctrl::Comment',
-            dependencies => { comment_model => '/Model/Comment', }
+            dependencies => { comment_model => '/Model/Comment' }
         );
-        service 'CommentA' => (
-            lifecycle    => 'Singleton',
-            class        => 'Senf::API::Ctrl::CommentA',
-            dependencies => { comment_model => '/Model/Comment', loop=>'/Async/Loop' }
-        );
-
     };
 
     container 'Model' => as {

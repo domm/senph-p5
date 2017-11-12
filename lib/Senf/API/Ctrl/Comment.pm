@@ -1,4 +1,4 @@
-package Senf::API::Ctrl::CommentA;
+package Senf::API::Ctrl::Comment;
 use 5.026;
 
 # ABSTRACT: API Controller for comment

@@ -12,7 +12,7 @@ use Log::Any qw($log);
 
 has 'comment_ctrl' => (
     is       => 'ro',
-    isa      => 'Senf::API::Ctrl::CommentA',
+    isa      => 'Senf::API::Ctrl::Comment',
     required => 1,
 );
 
