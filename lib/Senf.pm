@@ -29,6 +29,13 @@ my $c = container 'Senf' => as {
                 loop         => '/Async/Loop'
             }
         );
+        service 'disqus2senph.pl' => (
+            class        => 'Senph::Script::Disqus2Senph',
+            lifecycle    => 'Singleton',
+            dependencies => {
+                comment_model => '/Model/Comment'
+            }
+        );
     };
 
     container 'Controller' => as {

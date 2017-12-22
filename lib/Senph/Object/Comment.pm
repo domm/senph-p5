@@ -1,4 +1,4 @@
-package Senf::Object::Comment;
+package Senph::Object::Comment;
 use 5.026;
 
 # ABSTRACT: a comment
@@ -14,14 +14,19 @@ use Time::HiRes qw(time);
 
 with Storage( 'format' => 'JSON', 'io' => 'AtomicFile' );
 
-enum 'SenfCommentStatus' => [qw(pending rejected online)];
+enum 'SenphCommentStatus' => [qw(pending rejected online)];
 
-enum 'SenfCommentUserNotify' => [qw(none replies all)];
+enum 'SenphCommentUserNotify' => [qw(none replies all)];
 
 has 'ident' => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
+);
+
+has 'subject' => (
+    is       => 'ro',
+    isa      => 'Str',
 );
 
 has 'body' => (
@@ -52,7 +57,7 @@ has 'created' => (
 
 has 'status' => (
     is      => 'ro',
-    isa     => 'SenfCommentStatus',
+    isa     => 'SenphCommentStatus',
     default => 'pending',
 );
 
@@ -90,7 +95,7 @@ has 'user_email' => (
 
 has 'user_notify' => (
     is  => 'ro',
-    isa => 'Maybe[SenfCommentUserNotify]',
+    isa => 'Maybe[SenphCommentUserNotify]',
 );
 
 has 'user_email_is_verified' => (
@@ -107,6 +112,11 @@ has 'user_email_verified_at' => (
 has 'user_email_verified_ip' => (
     is  => 'ro',
     isa => 'Str',
+);
+
+has 'memo' => (
+    is=>'ro',
+    isa=>'Str',
 );
 
 __PACKAGE__->meta->make_immutable;

@@ -29,7 +29,14 @@ has 'http_client' => (
 sub load_site {
     my ( $self, $ident ) = @_;
 
-    return $ident if blessed($ident) && $ident->isa('Senf::Object::Site');
+    if (blessed($ident)) {
+        if ($ident->isa('Senf::Object::Site')) {
+            return $ident;
+        }
+        if ($ident->isa('Senf::Object::Topic')) {
+            $ident = $ident->url;
+        }
+    }
 
     my $file = $self->basedir->child( $self->_site_path($ident) );
     if ( -e $file ) {
@@ -143,7 +150,7 @@ sub _topic_path {
 
 sub _site_path {
     my ( $self, $uri ) = @_;
-
+warn "IN SITE_{PATH $uri";
     $uri = URI->new($uri) unless blessed($uri) && $uri->isa('URI');
     return join( '/', $uri->host, 'site.json' );
 }

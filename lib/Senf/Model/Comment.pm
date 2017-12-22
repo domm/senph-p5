@@ -60,8 +60,11 @@ sub create_comment {
     my $topic = $self->store->load_topic($topic_url);
 
     $comment_data->{ident} = $topic->comment_count;
-    $self->_do_create( $site, $topic, $topic, $comment_data );
-    $log->infof( "New comment create on %s", $topic->url );
+    my $comment = $self->_do_create( $site, $topic, $topic, $comment_data );
+    use Data::Dumper; $Data::Dumper::Maxdepth=30;$Data::Dumper::Sortkeys=1;warn Data::Dumper::Dumper $comment;
+
+    $log->infof( "New comment create on %s as %s", $topic->url, $comment->ident );
+    return $comment;
 }
 
 sub create_reply {
@@ -80,7 +83,10 @@ sub create_reply {
     }
 
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
-    $self->_do_create( $site, $topic, $reply_to, $comment_data );
+    my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
+    $log->infof( "New reply create on %s as %s", $topic->url, $reply->ident );
+    return $reply;
+
 }
 
 sub _do_create {
@@ -105,6 +111,7 @@ sub _do_create {
 
     push( $parent->comments->@*, $comment );
     $self->store->store_topic($topic);
+    return $comment;
 }
 
 __PACKAGE__->meta->make_immutable;
