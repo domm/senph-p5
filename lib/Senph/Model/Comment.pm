@@ -61,7 +61,6 @@ sub create_comment {
 
     $comment_data->{ident} = $topic->comment_count;
     my $comment = $self->_do_create( $site, $topic, $topic, $comment_data );
-    use Data::Dumper; $Data::Dumper::Maxdepth=30;$Data::Dumper::Sortkeys=1;warn Data::Dumper::Dumper $comment;
 
     $log->infof( "New comment create on %s as %s", $topic->url, $comment->ident );
     return $comment;
@@ -84,7 +83,7 @@ sub create_reply {
 
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
     my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
-    $log->infof( "New reply create on %s as %s", $topic->url, $reply->ident );
+    $log->infof( "New reply created on %s as %s", $topic->url, $reply->ident );
     return $reply;
 
 }

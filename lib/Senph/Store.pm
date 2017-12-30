@@ -150,7 +150,6 @@ sub _topic_path {
 
 sub _site_path {
     my ( $self, $uri ) = @_;
-warn "IN SITE_{PATH $uri";
     $uri = URI->new($uri) unless blessed($uri) && $uri->isa('URI');
     return join( '/', $uri->host, 'site.json' );
 }
