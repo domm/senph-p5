@@ -1,4 +1,4 @@
-package Senf::Store;
+package Senph::Store;
 use 5.026;
 
 # ABSTRACT: very basic file store
@@ -30,20 +30,20 @@ sub load_site {
     my ( $self, $ident ) = @_;
 
     if (blessed($ident)) {
-        if ($ident->isa('Senf::Object::Site')) {
+        if ($ident->isa('Senph::Object::Site')) {
             return $ident;
         }
-        if ($ident->isa('Senf::Object::Topic')) {
+        if ($ident->isa('Senph::Object::Topic')) {
             $ident = $ident->url;
         }
     }
 
     my $file = $self->basedir->child( $self->_site_path($ident) );
     if ( -e $file ) {
-        return Senf::Object::Site->load( $file->stringify );
+        return Senph::Object::Site->load( $file->stringify );
     }
 
-    Senf::X::NotFound->throw(
+    Senph::X::NotFound->throw(
         {   ident   => 'site-not-found',
             message => 'Site "%{site}s" not found',
             site    => $ident,
@@ -54,12 +54,12 @@ sub load_site {
 sub load_topic {
     my ( $self, $ident ) = @_;
 
-    return $ident if blessed($ident) && $ident->isa('Senf::Object::Topic');
+    return $ident if blessed($ident) && $ident->isa('Senph::Object::Topic');
 
     my $file = $self->basedir->child( $self->_topic_path($ident) );
 
     if ( -e $file ) {
-        return Senf::Object::Topic->load( $file->stringify );
+        return Senph::Object::Topic->load( $file->stringify );
     }
     else {
         my $topic;
@@ -69,7 +69,7 @@ sub load_topic {
                 if ( $res->code == 200 ) {
                     my $site = $self->load_site($ident);
 
-                    $topic = Senf::Object::Topic->new(
+                    $topic = Senph::Object::Topic->new(
                         url              => $ident,
                         show_comments    => $site->default_show_comments,
                         allow_comments   => $site->default_allow_comments,
@@ -80,7 +80,7 @@ sub load_topic {
                 }
                 else {
                     # TODO this X seems to be caught by Future/IO::Async and then passed on as a string
-                    Senf::X::NotFound->throw(
+                    Senph::X::NotFound->throw(
                         {   ident   => 'invalid-topic',
                             message => 'Topic "%{topic}s" not available',
                             topic   => $ident,
@@ -93,7 +93,7 @@ sub load_topic {
                 my $err = shift;
 
                 # TODO this X kills the server..
-                Senf::X::NotFound->throw(
+                Senph::X::NotFound->throw(
                     {   ident => 'site-not-reachable',
                         message =>
                             'Cannot contact "%{topic}s" to validate topic',
@@ -107,7 +107,7 @@ sub load_topic {
         return $topic if $topic;
 
         # TODO not sure how to reach this X
-        Senf::X->throw(
+        Senph::X->throw(
             {   ident       => 'cannot-create-topic',
                 message     => 'Topic %{topic}s could not be created',
                 topic       => $ident,

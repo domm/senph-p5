@@ -1,4 +1,4 @@
-package Senf;
+package Senph;
 use 5.026;
 
 # ABSTRACT: simple comment system / disqus clone
@@ -11,18 +11,18 @@ use Bread::Board;
 use Module::Runtime 'use_module';
 use Config::ZOMG;
 
-use Senf::X;
+use Senph::X;
 
-use Senf::Object::Site;
-use Senf::Object::Topic;
-use Senf::Object::Comment;
+use Senph::Object::Site;
+use Senph::Object::Topic;
+use Senph::Object::Comment;
 
 my $config = Config::ZOMG->new( name => "senf", path => "etc" );
 
-my $c = container 'Senf' => as {
+my $c = container 'Senph' => as {
     container 'App' => as {
         service 'senf.pl' => (
-            class        => 'Senf::API::AsyncPSGI',
+            class        => 'Senph::API::AsyncPSGI',
             lifecycle    => 'Singleton',
             dependencies => {
                 comment_ctrl => '/Controller/Comment',
@@ -41,7 +41,7 @@ my $c = container 'Senf' => as {
     container 'Controller' => as {
         service 'Comment' => (
             lifecycle    => 'Singleton',
-            class        => 'Senf::API::Ctrl::Comment',
+            class        => 'Senph::API::Ctrl::Comment',
             dependencies => { comment_model => '/Model/Comment' }
         );
     };
@@ -49,7 +49,7 @@ my $c = container 'Senf' => as {
     container 'Model' => as {
         service 'Comment' => (
             lifecycle    => 'Singleton',
-            class        => 'Senf::Model::Comment',
+            class        => 'Senph::Model::Comment',
             dependencies => { store => '/Store/File', }
         );
     };
@@ -57,7 +57,7 @@ my $c = container 'Senf' => as {
     container 'Store' => as {
         service 'File' => (
             lifecycle    => 'Singleton',
-            class        => 'Senf::Store',
+            class        => 'Senph::Store',
             dependencies => {
                 basedir     => literal( $config->load->{data_dir} ),
                 loop        => '/Async/Loop',

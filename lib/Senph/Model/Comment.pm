@@ -1,4 +1,4 @@
-package Senf::Model::Comment;
+package Senph::Model::Comment;
 use 5.026;
 
 # ABSTRACT: Comment Model
@@ -9,7 +9,7 @@ use Log::Any qw($log);
 
 has 'store' => (
     is       => 'ro',
-    isa      => 'Senf::Store',
+    isa      => 'Senph::Store',
     required => 1,
 );
 
@@ -20,7 +20,7 @@ sub show_topic {
     my $topic = $self->store->load_topic($ident);
 
     if ( !$topic->show_comments || !$site->global_show_comments ) {
-        Senf::X::Forbidden->throw(
+        Senph::X::Forbidden->throw(
             {   ident   => 'show-comments-disabled',
                 message => 'Showing comments is disabled here',
             }
@@ -75,7 +75,7 @@ sub create_reply {
     my $reply_to = $self->store->load_comment( $topic, $reply_to_ident );
 
     unless ( $reply_to->status eq 'online' ) {
-        Senf::X::Forbidden->throw(
+        Senph::X::Forbidden->throw(
             {   ident   => 'cannot-reply-non-online-comment',
                 message => "You cannot reply to a comment that's not online",
             }
@@ -93,7 +93,7 @@ sub _do_create {
     my ( $self, $site, $topic, $parent, $comment_data ) = @_;
 
     if ( !$topic->allow_comments || !$site->global_allow_comments ) {
-        Senf::X::Forbidden->throw(
+        Senph::X::Forbidden->throw(
             {   ident   => 'create-comments-disabled',
                 message => 'New comments are not accepted here',
             }
@@ -107,7 +107,7 @@ sub _do_create {
         $comment_data->{status} = 'online';
     }
 
-    my $comment = Senf::Object::Comment->new( $comment_data->%* );
+    my $comment = Senph::Object::Comment->new( $comment_data->%* );
 
     push( $parent->comments->@*, $comment );
     $self->store->store_topic($topic);

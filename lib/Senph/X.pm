@@ -1,4 +1,4 @@
-package Senf::X;
+package Senph::X;
 use Moose;
 with qw(Throwable::X);
 
@@ -18,9 +18,9 @@ has [qw(site topic)] => (
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
-package Senf::X::Forbidden;
+package Senph::X::Forbidden;
 use Moose;
-extends 'Senf::X';
+extends 'Senph::X';
 use Throwable::X -all;
 
 has '+http_status' => ( default => 403 );
@@ -28,9 +28,9 @@ has '+http_status' => ( default => 403 );
 no Moose;
 __PACKAGE__->meta->make_immutable;
 
-package Senf::X::NotFound;
+package Senph::X::NotFound;
 use Moose;
-extends 'Senf::X';
+extends 'Senph::X';
 use Throwable::X -all;
 
 has '+http_status' => ( default => 404 );

@@ -1,4 +1,4 @@
-package Senf::API::Request;
+package Senph::API::Request;
 use 5.026;
 
 # ABSTRACT: Request class providing various helper methods

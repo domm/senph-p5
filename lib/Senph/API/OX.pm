@@ -1,4 +1,4 @@
-package Senf::API::OX;
+package Senph::API::OX;
 use 5.026;
 
 # ABSTRACT: Just another OX
@@ -8,11 +8,11 @@ use OX::RouteBuilder::REST;
 use Plack::Runner;
 use Log::Any qw($log);
 
-sub request_class {'Senf::API::Request'}
+sub request_class {'Senph::API::Request'}
 
 has 'comment_ctrl' => (
     is       => 'ro',
-    isa      => 'Senf::API::Ctrl::Comment',
+    isa      => 'Senph::API::Ctrl::Comment',
     required => 1,
 );
 

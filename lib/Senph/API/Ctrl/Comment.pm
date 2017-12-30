@@ -1,4 +1,4 @@
-package Senf::API::Ctrl::Comment;
+package Senph::API::Ctrl::Comment;
 use 5.026;
 
 # ABSTRACT: API Controller for comment
@@ -8,7 +8,7 @@ use URI::Escape;
 
 has 'comment_model' => (
     is       => 'ro',
-    isa      => 'Senf::Model::Comment',
+    isa      => 'Senph::Model::Comment',
     required => 1,
 );
 

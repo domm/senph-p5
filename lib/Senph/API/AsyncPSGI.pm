@@ -1,4 +1,4 @@
-package Senf::API::AsyncPSGI;
+package Senph::API::AsyncPSGI;
 use 5.026;
 use Moose;
 
@@ -6,13 +6,13 @@ use Moose;
 
 use Plack::Builder;
 use Router::Simple;
-use Senf::API::Request;
+use Senph::API::Request;
 use Net::Async::HTTP::Server::PSGI;
 use Log::Any qw($log);
 
 has 'comment_ctrl' => (
     is       => 'ro',
-    isa      => 'Senf::API::Ctrl::Comment',
+    isa      => 'Senph::API::Ctrl::Comment',
     required => 1,
 );
 
@@ -33,7 +33,7 @@ sub run {
 
     my $api = sub {
         my $env = shift;
-        my $req = Senf::API::Request->new_from_env($env);
+        my $req = Senph::API::Request->new_from_env($env);
 
         if ( my $p = $router->match($env) ) {
             my $ctrl   = delete $p->{controller};
