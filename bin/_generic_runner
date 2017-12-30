@@ -10,5 +10,5 @@ use Module::Runtime 'use_module';
 Log::Any::Adapter->set('Stderr', log_level => $ENV{LOGLEVEL} || 'info');
 
 use Bread::Runner;
-Bread::Runner->run('Senf');
+Bread::Runner->run('Senph');
 

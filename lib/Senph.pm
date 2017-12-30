@@ -17,11 +17,11 @@ use Senph::Object::Site;
 use Senph::Object::Topic;
 use Senph::Object::Comment;
 
-my $config = Config::ZOMG->new( name => "senf", path => "etc" );
+my $config = Config::ZOMG->new( name => "senph", path => "etc" );
 
 my $c = container 'Senph' => as {
     container 'App' => as {
-        service 'senf.pl' => (
+        service 'senph.pl' => (
             class        => 'Senph::API::AsyncPSGI',
             lifecycle    => 'Singleton',
             dependencies => {

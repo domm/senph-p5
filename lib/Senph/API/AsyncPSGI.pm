@@ -73,7 +73,7 @@ sub run {
         addr => {
             family   => "inet",
             socktype => "stream",
-            port     => $ENV{SENF_PORT} || 8080
+            port     => $ENV{SENPH_PORT} || 8080
         },
         on_listen_error => sub { die "Cannot listen - $_[-1]\n" },
     );
