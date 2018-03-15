@@ -110,6 +110,15 @@ my $c = container 'Senph' => as {
                     Net::Async::SMTP::Client->new(
                     host => $config->load->{smtp}{host} );
                 $loop->add($smtp);
+                $smtp->connected->then(
+                    sub {
+                        $smtp->login(
+                            user => $config->load->{smtp}{user},
+                            pass => $config->load->{smtp}{password},
+                        );
+                    }
+                )->get;
+
                 return $smtp;
             },
         );

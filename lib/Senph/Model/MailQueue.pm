@@ -49,13 +49,10 @@ sub create {
             },
             body => $args->{body} . <<"EOFOOTER",
 
-Unsubscribe from this comment: TODO
-Unsubscribe from this topic:   TODO
-Never send me an email again:  TODO/blacklist
-
 -- 
 Senph $Senph::VERSION
 https://senph.plix.at
+Never send me an email again:  TODO/blacklist
 EOFOOTER
         )
     );
@@ -73,22 +70,12 @@ sub send {
         );
 
         eval {
-            $s->connected->then(
-                sub {
-                    $s->login(
-                        user => $self->smtp_user,
-                        pass => $self->smtp_password,
-                    );
-                }
-                )->then(
-                sub {
-                    $s->send(
-                        to   => $email->header('to'),
-                        from => $self->smtp_sender,
-                        data => $email->as_string,
-                    );
-                }
-                )->get;
+            # does not work if mail-server closed connection due to timeout. Maybe reconnect here?
+            $s->send(
+                to   => $email->header('to'),
+                from => $self->smtp_sender,
+                data => $email->as_string,
+            )->get;
         };
         if ($@) {
             $log->errorf( "Could not send mail: %s", $@ );
