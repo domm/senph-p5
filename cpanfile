@@ -30,3 +30,5 @@ requires 'Plack::Handler::Net::Async::HTTP::Server';
 requires 'Net::Async::HTTP';
 requires 'IO::Async::SSL';
 requires 'Router::Simple';
+
+requires 'Net::Async::SMTP';

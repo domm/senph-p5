@@ -17,6 +17,27 @@ DISTRIBUTIONS
       POSIX::strftime::Compiler 0.30
       Time::Local 0
       perl 5.008001
+  Authen-SASL-2.16
+    pathname: G/GB/GBARR/Authen-SASL-2.16.tar.gz
+    provides:
+      Authen::SASL 2.16
+      Authen::SASL::CRAM_MD5 2.14
+      Authen::SASL::EXTERNAL 2.14
+      Authen::SASL::Perl 2.14
+      Authen::SASL::Perl::ANONYMOUS 2.14
+      Authen::SASL::Perl::CRAM_MD5 2.14
+      Authen::SASL::Perl::DIGEST_MD5 2.14
+      Authen::SASL::Perl::EXTERNAL 2.14
+      Authen::SASL::Perl::GSSAPI 0.05
+      Authen::SASL::Perl::LOGIN 2.14
+      Authen::SASL::Perl::Layer 2.14
+      Authen::SASL::Perl::PLAIN 2.14
+    requirements:
+      Digest::HMAC_MD5 0
+      Digest::MD5 0
+      ExtUtils::MakeMaker 6.42
+      Test::More 0
+      perl 5.005
   B-Hooks-EndOfScope-0.21
     pathname: E/ET/ETHER/B-Hooks-EndOfScope-0.21.tar.gz
     provides:
@@ -363,6 +384,17 @@ DISTRIBUTIONS
     requirements:
       Devel::StackTrace 0
       ExtUtils::MakeMaker 0
+  Digest-HMAC-1.03
+    pathname: G/GA/GAAS/Digest-HMAC-1.03.tar.gz
+    provides:
+      Digest::HMAC 1.03
+      Digest::HMAC_MD5 1.01
+      Digest::HMAC_SHA1 1.03
+    requirements:
+      Digest::MD5 2
+      Digest::SHA 1
+      ExtUtils::MakeMaker 0
+      perl 5.004
   Digest-SHA1-2.13
     pathname: G/GA/GAAS/Digest-SHA1-2.13.tar.gz
     provides:
@@ -530,6 +562,19 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  File-Listing-6.04
+    pathname: G/GA/GAAS/File-Listing-6.04.tar.gz
+    provides:
+      File::Listing 6.04
+      File::Listing::apache 6.04
+      File::Listing::dosftp 6.04
+      File::Listing::netware 6.04
+      File::Listing::unix 6.04
+      File::Listing::vms 6.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      perl 5.006002
   File-ShareDir-1.104
     pathname: R/RE/REHSACK/File-ShareDir-1.104.tar.gz
     provides:
@@ -592,6 +637,27 @@ DISTRIBUTIONS
       overload 0
       strict 0
       warnings 0
+  HTML-Parser-3.72
+    pathname: G/GA/GAAS/HTML-Parser-3.72.tar.gz
+    provides:
+      HTML::Entities 3.69
+      HTML::Filter 3.72
+      HTML::HeadParser 3.71
+      HTML::LinkExtor 3.69
+      HTML::Parser 3.72
+      HTML::PullParser 3.57
+      HTML::TokeParser 3.69
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTML::Tagset 3
+      XSLoader 0
+      perl 5.008
+  HTML-Tagset-3.20
+    pathname: P/PE/PETDANCE/HTML-Tagset-3.20.tar.gz
+    provides:
+      HTML::Tagset 3.20
+    requirements:
+      ExtUtils::MakeMaker 0
   HTTP-Body-1.22
     pathname: G/GE/GETTY/HTTP-Body-1.22.tar.gz
     provides:
@@ -625,6 +691,21 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       vars 0
+  HTTP-Daemon-6.01
+    pathname: G/GA/GAAS/HTTP-Daemon-6.01.tar.gz
+    provides:
+      HTTP::Daemon 6.01
+      HTTP::Daemon::ClientConn 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Date 6
+      HTTP::Request 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Socket 0
+      LWP::MediaTypes 6
+      Sys::Hostname 0
+      perl 5.008001
   HTTP-Date-6.02
     pathname: G/GA/GAAS/HTTP-Date-6.02.tar.gz
     provides:
@@ -708,6 +789,14 @@ DISTRIBUTIONS
       Scalar::Util 0
       Test::Deep 0
       Test::More 0.88
+      perl 5.008001
+  HTTP-Negotiate-6.01
+    pathname: G/GA/GAAS/HTTP-Negotiate-6.01.tar.gz
+    provides:
+      HTTP::Negotiate 6.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      HTTP::Headers 6
       perl 5.008001
   HTTP-Parser-XS-0.17
     pathname: K/KA/KAZUHO/HTTP-Parser-XS-0.17.tar.gz
@@ -861,6 +950,20 @@ DISTRIBUTIONS
       Struct::Dumb 0
       Time::HiRes 0
       perl 5.008004
+  IO-Async-Resolver-DNS-0.06
+    pathname: P/PE/PEVANS/IO-Async-Resolver-DNS-0.06.tar.gz
+    provides:
+      IO::Async::Resolver::DNS 0.06
+      IO::Async::Resolver::DNS::Constants 0.06
+      IO::Async::Resolver::DNS::LibResolvImpl 0.06
+      IO::Async::Resolver::DNS::NetDNSImpl 0.06
+    requirements:
+      Future 0
+      IO::Async::Loop 0.47
+      IO::Async::Resolver 0.52
+      List::UtilsBy 0.07
+      Module::Build 0.4004
+      Net::DNS 0
   IO-Async-SSL-0.20
     pathname: P/PE/PEVANS/IO-Async-SSL-0.20.tar.gz
     provides:
@@ -1963,6 +2066,152 @@ DISTRIBUTIONS
       IO::Async 0.54
       IO::Async::Listener 0.61
       Module::Build 0.4004
+  Net-Async-SMTP-0.002
+    pathname: T/TE/TEAM/Net-Async-SMTP-0.002.tar.gz
+    provides:
+      Net::Async::SMTP 0.002
+      Net::Async::SMTP::Client 0.002
+      Net::Async::SMTP::Connection 0.002
+    requirements:
+      ExtUtils::MakeMaker 6.48
+      Future 0.24
+      IO::Async 0.54
+      IO::Async::Resolver::DNS 0.04
+      IO::Socket::SSL 0
+      Protocol::SMTP 0.001
+      parent 0
+  Net-DNS-1.15
+    pathname: N/NL/NLNETLABS/Net-DNS-1.15.tar.gz
+    provides:
+      Net::DNS 1.15
+      Net::DNS::Domain 1611
+      Net::DNS::DomainName 1605
+      Net::DNS::DomainName1035 1605
+      Net::DNS::DomainName2535 1605
+      Net::DNS::Header 1527
+      Net::DNS::Mailbox 1605
+      Net::DNS::Mailbox1035 1605
+      Net::DNS::Mailbox2535 1605
+      Net::DNS::Nameserver 1608
+      Net::DNS::Packet 1584
+      Net::DNS::Parameters 1623
+      Net::DNS::Question 1530
+      Net::DNS::RR 1611
+      Net::DNS::RR::A 1597
+      Net::DNS::RR::AAAA 1597
+      Net::DNS::RR::AFSDB 1597
+      Net::DNS::RR::APL 1597
+      Net::DNS::RR::APL::Item 1597
+      Net::DNS::RR::CAA 1597
+      Net::DNS::RR::CDNSKEY 1586
+      Net::DNS::RR::CDS 1586
+      Net::DNS::RR::CERT 1597
+      Net::DNS::RR::CNAME 1597
+      Net::DNS::RR::CSYNC 1597
+      Net::DNS::RR::DHCID 1597
+      Net::DNS::RR::DLV 1528
+      Net::DNS::RR::DNAME 1597
+      Net::DNS::RR::DNSKEY 1597
+      Net::DNS::RR::DS 1597
+      Net::DNS::RR::EUI48 1597
+      Net::DNS::RR::EUI64 1597
+      Net::DNS::RR::GPOS 1528
+      Net::DNS::RR::HINFO 1597
+      Net::DNS::RR::HIP 1597
+      Net::DNS::RR::IPSECKEY 1597
+      Net::DNS::RR::ISDN 1597
+      Net::DNS::RR::KEY 1528
+      Net::DNS::RR::KX 1597
+      Net::DNS::RR::L32 1597
+      Net::DNS::RR::L64 1597
+      Net::DNS::RR::LOC 1597
+      Net::DNS::RR::LP 1597
+      Net::DNS::RR::MB 1528
+      Net::DNS::RR::MG 1528
+      Net::DNS::RR::MINFO 1597
+      Net::DNS::RR::MR 1528
+      Net::DNS::RR::MX 1597
+      Net::DNS::RR::NAPTR 1597
+      Net::DNS::RR::NID 1597
+      Net::DNS::RR::NS 1597
+      Net::DNS::RR::NSEC 1597
+      Net::DNS::RR::NSEC3 1597
+      Net::DNS::RR::NSEC3PARAM 1597
+      Net::DNS::RR::NULL 1528
+      Net::DNS::RR::OPENPGPKEY 1597
+      Net::DNS::RR::OPT 1605
+      Net::DNS::RR::OPT::CHAIN 1605
+      Net::DNS::RR::OPT::CLIENT_SUBNET 1605
+      Net::DNS::RR::OPT::COOKIE 1605
+      Net::DNS::RR::OPT::DAU 1605
+      Net::DNS::RR::OPT::DHU 1605
+      Net::DNS::RR::OPT::EXPIRE 1605
+      Net::DNS::RR::OPT::KEY_TAG 1605
+      Net::DNS::RR::OPT::N3U 1605
+      Net::DNS::RR::OPT::PADDING 1605
+      Net::DNS::RR::OPT::TCP_KEEPALIVE 1605
+      Net::DNS::RR::PTR 1597
+      Net::DNS::RR::PX 1597
+      Net::DNS::RR::RP 1597
+      Net::DNS::RR::RRSIG 1623
+      Net::DNS::RR::RT 1597
+      Net::DNS::RR::SIG 1611
+      Net::DNS::RR::SMIMEA 1597
+      Net::DNS::RR::SOA 1597
+      Net::DNS::RR::SPF 1593
+      Net::DNS::RR::SRV 1597
+      Net::DNS::RR::SSHFP 1597
+      Net::DNS::RR::TKEY 1528
+      Net::DNS::RR::TLSA 1597
+      Net::DNS::RR::TSIG 1597
+      Net::DNS::RR::TXT 1597
+      Net::DNS::RR::URI 1597
+      Net::DNS::RR::X25 1597
+      Net::DNS::Resolver 1598
+      Net::DNS::Resolver::Base 1608
+      Net::DNS::Resolver::MSWin32 1568
+      Net::DNS::Resolver::Recurse 1623
+      Net::DNS::Resolver::UNIX 1573
+      Net::DNS::Resolver::android 1568
+      Net::DNS::Resolver::cygwin 1568
+      Net::DNS::Resolver::os2 1568
+      Net::DNS::Resolver::os390 1579
+      Net::DNS::Text 1601
+      Net::DNS::Update 1571
+      Net::DNS::ZoneFile 1623
+      Net::DNS::ZoneFile::Generator 1623
+      Net::DNS::ZoneFile::Text 1623
+    requirements:
+      Digest::HMAC 1.03
+      Digest::MD5 2.13
+      Digest::SHA 5.23
+      ExtUtils::MakeMaker 0
+      File::Spec 0.86
+      IO::File 1.08
+      IO::Socket 1.16
+      MIME::Base64 2.11
+      Test::More 0.52
+      Time::Local 1.19
+      perl 5.006
+  Net-HTTP-6.17
+    pathname: O/OA/OALDERS/Net-HTTP-6.17.tar.gz
+    provides:
+      Net::HTTP 6.17
+      Net::HTTP::Methods 6.17
+      Net::HTTP::NB 6.17
+      Net::HTTPS 6.17
+    requirements:
+      Carp 0
+      Compress::Raw::Zlib 0
+      ExtUtils::MakeMaker 0
+      IO::Socket::INET 0
+      IO::Uncompress::Gunzip 0
+      URI 0
+      base 0
+      perl 5.006002
+      strict 0
+      vars 0
+      warnings 0
   Net-SSLeay-1.81
     pathname: M/MI/MIKEM/Net-SSLeay-1.81.tar.gz
     provides:
@@ -2362,24 +2611,18 @@ DISTRIBUTIONS
       Plack::Component 0
       Plack::Request 0.08
       Try::Tiny 0
-  Plack-Middleware-PrettyException-1.004
-    pathname: D/DO/DOMM/Plack-Middleware-PrettyException-1.004.tar.gz
+  Protocol-SMTP-0.002
+    pathname: T/TE/TEAM/Protocol-SMTP-0.002.tar.gz
     provides:
-      Plack::Middleware::PrettyException 1.004
+      Protocol::SMTP 0.002
+      Protocol::SMTP::Client 0.002
     requirements:
-      HTTP::Headers 0
-      HTTP::Status 0
-      JSON::MaybeXS 0
-      Log::Any 0
-      Module::Build 0.28
-      Plack::Middleware 0
-      Plack::Util 0
-      Plack::Util::Accessor 0
-      Scalar::Util 0
+      Authen::SASL 0
+      ExtUtils::MakeMaker 6.48
+      Future 0.24
+      MIME::Base64 0
+      curry 0
       parent 0
-      perl 5.010
-      strict 0
-      warnings 0
   Role-HasMessage-0.006
     pathname: R/RJ/RJBS/Role-HasMessage-0.006.tar.gz
     provides:
@@ -3071,6 +3314,18 @@ DISTRIBUTIONS
       ExtUtils::CBuilder 0
       Module::Build 0.4005
       perl 5.008001
+  WWW-RobotRules-6.02
+    pathname: G/GA/GAAS/WWW-RobotRules-6.02.tar.gz
+    provides:
+      WWW::RobotRules 6.02
+      WWW::RobotRules::AnyDBM_File 6.00
+      WWW::RobotRules::InCore 6.02
+    requirements:
+      AnyDBM_File 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      URI 1.10
+      perl 5.008001
   Web-Request-0.11
     pathname: D/DO/DOY/Web-Request-0.11.tar.gz
     provides:
@@ -3112,6 +3367,80 @@ DISTRIBUTIONS
       Moose::Role 0
       Web::Response 0
       perl 5.010
+  XML-NamespaceSupport-1.12
+    pathname: P/PE/PERIGRIN/XML-NamespaceSupport-1.12.tar.gz
+    provides:
+      XML::NamespaceSupport 1.12
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      constant 0
+      perl 5.006
+      strict 0
+      vars 0
+      warnings 0
+  XML-Parser-2.44
+    pathname: T/TO/TODDR/XML-Parser-2.44.tar.gz
+    provides:
+      XML::Parser 2.44
+      XML::Parser::Expat 2.44
+      XML::Parser::Style::Debug undef
+      XML::Parser::Style::Objects undef
+      XML::Parser::Style::Stream undef
+      XML::Parser::Style::Subs undef
+      XML::Parser::Style::Tree undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      LWP::UserAgent 0
+      Test::More 0
+      perl 5.00405
+  XML-SAX-0.99
+    pathname: G/GR/GRANTM/XML-SAX-0.99.tar.gz
+    provides:
+      XML::SAX 0.99
+      XML::SAX::DocumentLocator undef
+      XML::SAX::ParserFactory 1.01
+      XML::SAX::PurePerl 0.99
+      XML::SAX::PurePerl::DebugHandler undef
+      XML::SAX::PurePerl::Exception undef
+      XML::SAX::PurePerl::Productions undef
+      XML::SAX::PurePerl::Reader undef
+      XML::SAX::PurePerl::Reader::Stream undef
+      XML::SAX::PurePerl::Reader::String undef
+      XML::SAX::PurePerl::Reader::URI undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Temp 0
+      XML::NamespaceSupport 0.03
+      XML::SAX::Base 1.05
+  XML-SAX-Base-1.09
+    pathname: G/GR/GRANTM/XML-SAX-Base-1.09.tar.gz
+    provides:
+      XML::SAX::Base 1.09
+      XML::SAX::Base::NoHandler 1.09
+      XML::SAX::Exception 1.09
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.008
+  XML-SAX-Expat-0.51
+    pathname: B/BJ/BJOERN/XML-SAX-Expat-0.51.tar.gz
+    provides:
+      XML::SAX::Expat 0.51
+    requirements:
+      ExtUtils::MakeMaker 0
+      XML::NamespaceSupport 0.03
+      XML::Parser 2.27
+      XML::SAX 0.03
+      XML::SAX::Base 1.00
+  XML-Simple-2.24
+    pathname: G/GR/GRANTM/XML-Simple-2.24.tar.gz
+    provides:
+      XML::Simple 2.24
+    requirements:
+      ExtUtils::MakeMaker 0
+      XML::NamespaceSupport 1.04
+      XML::SAX 0.15
+      XML::SAX::Expat 0
+      perl 5.008
   YAML-1.23
     pathname: I/IN/INGY/YAML-1.23.tar.gz
     provides:
@@ -3154,6 +3483,14 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
+  curry-1.001000
+    pathname: M/MS/MSTROUT/curry-1.001000.tar.gz
+    provides:
+      curry 1.001000
+      curry::weak 1.001000
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.006
   indirect-0.37
     pathname: V/VP/VPIT/indirect-0.37.tar.gz
     provides:
@@ -3184,6 +3521,67 @@ DISTRIBUTIONS
       lib 0
       local::lib 0
       perl 5.010
+      strict 0
+      warnings 0
+  libwww-perl-6.29
+    pathname: O/OA/OALDERS/libwww-perl-6.29.tar.gz
+    provides:
+      LWP 6.29
+      LWP::Authen::Basic 6.29
+      LWP::Authen::Digest 6.29
+      LWP::Authen::Ntlm 6.29
+      LWP::ConnCache 6.29
+      LWP::Debug 6.29
+      LWP::Debug::TraceHTTP 6.29
+      LWP::DebugFile 6.29
+      LWP::MemberMixin 6.29
+      LWP::Protocol 6.29
+      LWP::Protocol::MyFTP 6.29
+      LWP::Protocol::cpan 6.29
+      LWP::Protocol::data 6.29
+      LWP::Protocol::file 6.29
+      LWP::Protocol::ftp 6.29
+      LWP::Protocol::gopher 6.29
+      LWP::Protocol::http 6.29
+      LWP::Protocol::loopback 6.29
+      LWP::Protocol::mailto 6.29
+      LWP::Protocol::nntp 6.29
+      LWP::Protocol::nogo 6.29
+      LWP::RobotUA 6.29
+      LWP::Simple 6.29
+      LWP::UserAgent 6.29
+      libwww::perl undef
+    requirements:
+      Digest::MD5 0
+      Encode 2.12
+      Encode::Locale 0
+      ExtUtils::MakeMaker 0
+      File::Copy 0
+      File::Listing 6
+      Getopt::Long 0
+      HTML::Entities 0
+      HTML::HeadParser 0
+      HTTP::Cookies 6
+      HTTP::Daemon 6
+      HTTP::Date 6
+      HTTP::Negotiate 6
+      HTTP::Request 6
+      HTTP::Request::Common 6
+      HTTP::Response 6
+      HTTP::Status 6
+      IO::Select 0
+      IO::Socket 0
+      LWP::MediaTypes 6
+      MIME::Base64 2.1
+      Net::FTP 2.58
+      Net::HTTP 6.07
+      Scalar::Util 0
+      Try::Tiny 0
+      URI 1.10
+      URI::Escape 0
+      WWW::RobotRules 6
+      base 0
+      perl 5.008001
       strict 0
       warnings 0
   local-lib-2.000023

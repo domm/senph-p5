@@ -8,6 +8,10 @@ use Plack::Builder;
 use Router::Simple;
 use Senph::API::Request;
 use Net::Async::HTTP::Server::PSGI;
+use Net::Async::SMTP::Client;
+use IO::Async::Timer::Periodic;
+use Email::Simple;
+
 use Log::Any qw($log);
 
 has 'comment_ctrl' => (
@@ -19,6 +23,12 @@ has 'comment_ctrl' => (
 has 'loop' => (
     is       => 'ro',
     isa      => 'IO::Async::Loop',
+    required => 1,
+);
+
+has 'mail_queue' => (
+    is       => 'ro',
+    isa      => 'Senph::Model::MailQueue',
     required => 1,
 );
 
@@ -78,9 +88,19 @@ sub run {
         },
         on_listen_error => sub { die "Cannot listen - $_[-1]\n" },
     );
-    $log->infof("Starting up on http://localhost:%i",$port);
+    $log->infof( "Starting up on http://localhost:%i", $port );
+
+    my $timer = IO::Async::Timer::Periodic->new(
+        interval       => 3,
+        first_interval => 1,
+        on_tick        => sub {
+            $self->mail_queue->send;
+        }
+    );
+    $timer->start;
+    $self->loop->add($timer);
+
     $self->loop->run;
 }
 
 __PACKAGE__->meta->make_immutable;
-

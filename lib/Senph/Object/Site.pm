@@ -5,6 +5,7 @@ use 5.026;
 
 use Moose;
 use MooseX::Types::URI qw(Uri);
+use MooseX::Types::Email qw(EmailAddress);
 use MooseX::Storage;
 use Moose::Util::TypeConstraints;
 
@@ -22,6 +23,12 @@ has 'url' => (
 has 'name' => (
     is       => 'ro',
     isa      => 'Str',
+    required => 1,
+);
+
+has 'owner_email' => (
+    is       => 'ro',
+    isa      => EmailAddress,
     required => 1,
 );
 

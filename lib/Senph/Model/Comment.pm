@@ -7,9 +7,17 @@ use Moose;
 use MooseX::Types::Path::Tiny qw/Dir/;
 use Log::Any qw($log);
 
+use Email::Simple;
+
 has 'store' => (
     is       => 'ro',
     isa      => 'Senph::Store',
+    required => 1,
+);
+
+has 'mail_queue' => (
+    is       => 'ro',
+    isa      => 'Senph::Model::MailQueue',
     required => 1,
 );
 
@@ -31,6 +39,7 @@ sub show_topic {
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 
+    $self->mail_queue->create( 'domm@plix.at', 'test', 'comment viewed' );
     return \%data;
 }
 
@@ -62,7 +71,25 @@ sub create_comment {
     $comment_data->{ident} = $topic->comment_count;
     my $comment = $self->_do_create( $site, $topic, $topic, $comment_data );
 
-    $log->infof( "New comment create on %s as %s", $topic->url, $comment->ident );
+    $self->mail_queue->enqueue(
+        Email::Simple->create(
+            header => [
+                From    => 'robot@plix.at',
+                To      => 'domm@plix.at',
+                Subject => 'test',
+            ],
+            attributes => {
+                encoding => "8bitmime",
+                charset  => "UTF-8",
+            },
+            body => 'hallo!',
+        )
+    );
+
+    #$self->mail_queue->create('domm@plix.at','test','comment viewed');
+
+    $log->infof( "New comment create on %s as %s",
+        $topic->url, $comment->ident );
     return $comment;
 }
 
@@ -85,10 +112,25 @@ sub create_reply {
     my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
 
     # TODO notify author
+    if ( $reply_to->user_notify && $reply_to->user_email_is_verified ) {
+        $self->mail_queue->create(
+            {   to      => $reply_to->user_email,
+                subject => sprintf( 'Somebody replied to your comment on %s',
+                    $topic->url ),
+                body => "Here's the reply:\n\n"
+                    . $reply->user_name
+                    . "said: \n"
+                    . $reply->body . "\n\n"
+                    . $topic->url . "\n\n"
+                    . "Unsubscribe from this comment: TODO\n"
+                    . "Unsubscribe from this topic:   TODO\n"
+            }
+        );
+    }
 
-    $log->infof( "New reply created on %s as %s", $topic->url, $reply->ident );
+    $log->infof( "New reply created on %s as %s", $topic->url,
+        $reply->ident );
     return $reply;
-
 }
 
 sub _do_create {
@@ -104,6 +146,7 @@ sub _do_create {
 
     if ( $topic->require_approval || $site->global_require_approval ) {
         $comment_data->{status} = 'pending';
+
         # TODO notify owner
     }
     else {
