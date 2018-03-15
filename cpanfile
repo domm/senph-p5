@@ -22,7 +22,7 @@ requires 'Web::Request';
 requires 'Plack';
 requires 'Plack::Handler::Starman';
 requires 'HTTP::Throwable::Factory';
-requires 'Plack::Middleware::PrettyException';
+requires 'Plack::Middleware::PrettyException' => '1.005';
 requires 'Web::Request::Role::JSON';
 requires 'Web::Request::Role::Response';
 

@@ -69,15 +69,16 @@ sub run {
 
     $self->loop->add($httpserver);
 
+    my $port = $ENV{SENPH_PORT} || 8080;
     $httpserver->listen(
         addr => {
             family   => "inet",
             socktype => "stream",
-            port     => $ENV{SENPH_PORT} || 8080
+            port     => $port,
         },
         on_listen_error => sub { die "Cannot listen - $_[-1]\n" },
     );
-
+    $log->infof("Starting up on http://localhost:%i",$port);
     $self->loop->run;
 }
 
