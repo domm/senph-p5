@@ -39,7 +39,7 @@ sub walk_comments {
     my @list;
     foreach my $comment ( $topic->all_comments ) {
         my %comment = map { $_ => $comment->$_ }
-            qw (subject body created user_name user_email ident);
+            qw (body created user_name user_email ident);
         if ( $comment->is_deleted ) {
             %comment = map { $_ => 'deleted' } keys %comment;
         }
@@ -83,6 +83,9 @@ sub create_reply {
 
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
     my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
+
+    # TODO notify author
+
     $log->infof( "New reply created on %s as %s", $topic->url, $reply->ident );
     return $reply;
 
@@ -101,6 +104,7 @@ sub _do_create {
 
     if ( $topic->require_approval || $site->global_require_approval ) {
         $comment_data->{status} = 'pending';
+        # TODO notify owner
     }
     else {
         $comment_data->{status} = 'online';
@@ -110,6 +114,9 @@ sub _do_create {
 
     push( $parent->comments->@*, $comment );
     $self->store->store_topic($topic);
+
+    # TODO init verify author email if author wants notifications
+
     return $comment;
 }
 

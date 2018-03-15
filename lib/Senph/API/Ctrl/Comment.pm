@@ -25,7 +25,6 @@ sub topic_POST {
 
     my $topic  = uri_unescape( $args->{topic} );
     my $create = {
-        subject     => $req->param('subject'),
         body        => $req->param('body'),
         user_name   => $req->param('user_name'),
         user_notify => $req->param('user_notify'),
@@ -42,7 +41,6 @@ sub reply_POST {
 
     my $topic  = uri_unescape( $args->{topic} );
     my $create = {
-        subject     => $req->param('subject'),
         body        => $req->param('body'),
         user_name   => $req->param('user_name'),
         user_notify => $req->param('user_notify'),

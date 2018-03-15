@@ -24,11 +24,6 @@ has 'ident' => (
     required => 1,
 );
 
-has 'subject' => (
-    is       => 'ro',
-    isa      => 'Str',
-);
-
 has 'body' => (
     is       => 'ro',
     isa      => 'Str',
@@ -76,7 +71,7 @@ has 'secret' => (
 sub _build_secret {
     my $self = shift;
     my $digest = sha1_base64( time, rand(10000), $$, $^T );
-    $digest =~ tr{/+}{_-};
+    $digest =~ tr{/+}{_-}; # poor person's base64url
     return $digest;
 }
 
