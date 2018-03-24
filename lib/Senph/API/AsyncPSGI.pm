@@ -40,6 +40,13 @@ sub run {
         { controller => 'comment_ctrl', action => 'topic', rest => 1 } );
     $router->connect( '/api/comment/:topic/:reply_to',
         { controller => 'comment_ctrl', action => 'reply', rest => 1 } );
+    $router->connect( '/web/approve/:topic/',
+        { controller => 'approve_ctrl', action => 'form' } );
+    $router->connect( '/web/verify-mail/:comment/:secret',
+        { controller => 'approve_ctrl', action => 'form' } );
+    $router->connect( '/web/manage/:comment/:secret',
+        { controller => 'approve_ctrl', action => 'form' } );
+
 
     my $api = sub {
         my $env = shift;
