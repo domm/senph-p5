@@ -61,7 +61,18 @@ EOFOOTER
 sub send {
     my $self = shift;
 
+    return unless $self->queued;
+
     my $s = $self->smtp;
+    $s->connected->then(
+        sub {
+            $s->login(
+            user => $self->smtp_user,
+            pass => $self->smtp_password,
+            );
+        }
+    )->get;
+
     while ( my $email = $self->next_mail ) {
         $log->infof(
             "Sending mail '%s' to %s",
@@ -81,6 +92,7 @@ sub send {
             $log->errorf( "Could not send mail: %s", $@ );
         }
     }
+    $s->quit->get;
 }
 
 __PACKAGE__->meta->make_immutable;
