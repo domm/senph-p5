@@ -24,13 +24,9 @@ sub topic_POST {
     my ( $self, $req, $args ) = @_;
 
     my $topic  = uri_unescape( $args->{topic} );
-    my $create = {
-        body        => $req->param('body'),
-        user_name   => $req->param('user_name'),
-        user_notify => $req->param('user_notify'),
-    };
+    my $payload = $req->json_payload;
 
-    $self->comment_model->create_comment( $topic, $create );
+    $self->comment_model->create_comment( $topic, $payload );
 
     my $data = $self->comment_model->show_topic($topic);
     return $req->json_response($data);
@@ -40,13 +36,9 @@ sub reply_POST {
     my ( $self, $req, $args ) = @_;
 
     my $topic  = uri_unescape( $args->{topic} );
-    my $create = {
-        body        => $req->param('body'),
-        user_name   => $req->param('user_name'),
-        user_notify => $req->param('user_notify'),
-    };
+    my $payload = $req->json_payload;
 
-    $self->comment_model->create_reply( $topic, $args->{reply_to}, $create );
+    $self->comment_model->create_reply( $topic, $args->{reply_to}, $payload );
 
     my $data = $self->comment_model->show_topic($topic);
     return $req->json_response($data);
