@@ -95,5 +95,13 @@ sub send {
     $s->quit->get;
 }
 
+# sub create_notify_new_comment: to site-owner: delete-link
+# sub create_approve: to site-owner; approve-link, delete-link
+# sub create_verification: to author; verify-link, delete-link, settings-link?
+# sub create_notify_reply: to author; view-link, unsubscribe-link
+# sub create_notify_activity: to subscribers: view-link, unsubscribe-link
+# sub create_blacklist: to email; optout-link
+
+
 __PACKAGE__->meta->make_immutable;
 

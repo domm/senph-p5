@@ -22,10 +22,10 @@ my $config = Config::ZOMG->new( name => "senph", path => "etc" );
 my $c = container 'Senph' => as {
     container 'App' => as {
         service 'senph.pl' => (
-            class        => 'Senph::API::AsyncPSGI',
+            class        => 'Senph::Async',
             lifecycle    => 'Singleton',
             dependencies => {
-                comment_ctrl => '/Controller/Comment',
+                psgi => '/PSGI/API',
                 loop         => '/Async/Loop',
                 mail_queue   => '/Model/MailQueue',
 
@@ -35,6 +35,18 @@ my $c = container 'Senph' => as {
             class        => 'Senph::Script::Disqus2Senph',
             lifecycle    => 'Singleton',
             dependencies => { comment_model => '/Model/Comment' }
+        );
+    };
+
+    container 'PSGI' => as {
+        service 'API' => (
+            class=>'Senph::API::PSGI',
+            lifecycle    => 'Singleton',
+            dependencies => {
+                comment_ctrl => '/Controller/Comment',
+                loop         => '/Async/Loop',
+                mail_queue   => '/Model/MailQueue',
+            }
         );
     };
 
