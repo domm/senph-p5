@@ -31,4 +31,4 @@ requires 'Net::Async::HTTP';
 requires 'IO::Async::SSL';
 requires 'Router::Simple';
 
-requires 'Net::Async::SMTP';
+requires 'Net::Async::SMTP' => '0.003';

@@ -7,7 +7,6 @@ use Moose;
 use Plack::Builder;
 use Router::Simple;
 use Senph::API::Request;
-use Email::Simple;
 
 use Log::Any qw($log);
 
