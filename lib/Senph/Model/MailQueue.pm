@@ -81,7 +81,6 @@ sub send {
         );
 
         eval {
-            # does not work if mail-server closed connection due to timeout. Maybe reconnect here?
             $s->send(
                 to   => $email->header('to'),
                 from => $self->smtp_sender,
