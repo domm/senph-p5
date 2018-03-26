@@ -85,7 +85,7 @@ sub create_comment {
         )
     );
 
-    #$self->mail_queue->create('domm@plix.at','test','comment viewed');
+    $self->notify_approve($site, $topic, $comment) if $comment->status eq 'pending';
 
     $log->infof( "New comment create on %s as %s",
         $topic->url, $comment->ident );
@@ -110,22 +110,8 @@ sub create_reply {
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
     my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
 
-    # TODO notify author
-    if ( $reply_to->user_notify && $reply_to->user_email_is_verified ) {
-        $self->mail_queue->create(
-            {   to      => $reply_to->user_email,
-                subject => sprintf( 'Somebody replied to your comment on %s',
-                    $topic->url ),
-                body => "Here's the reply:\n\n"
-                    . $reply->user_name
-                    . "said: \n"
-                    . $reply->body . "\n\n"
-                    . $topic->url . "\n\n"
-                    . "Unsubscribe from this comment: TODO\n"
-                    . "Unsubscribe from this topic:   TODO\n"
-            }
-        );
-    }
+    $self->notify_approve($site, $topic, $reply) if $reply->status eq 'pending';
+    $self->notify_watcher($site, $topic, $reply_to, $reply);
 
     $log->infof( "New reply created on %s as %s", $topic->url,
         $reply->ident );
@@ -145,8 +131,6 @@ sub _do_create {
 
     if ( $topic->require_approval || $site->global_require_approval ) {
         $comment_data->{status} = 'pending';
-
-        # TODO notify owner
     }
     else {
         $comment_data->{status} = 'online';
@@ -160,6 +144,43 @@ sub _do_create {
     # TODO init verify author email if author wants notifications
 
     return $comment;
+}
+
+sub notify_approve {
+    my ($self, $site, $topic, $comment) = @_;
+    $self->mail_queue->create(
+        {   to      => $site->owner_email,
+            subject => sprintf( 'New comment on %s, please approve',
+                $site->name ),
+            body => "To approve, open this link:\n\n"
+            . $comment # TODO URL
+        }
+    );
+}
+
+sub notify_watcher {
+    my ($self, $site, $topic, $reply_to, $reply) = @_;
+
+    if ( $reply_to->user_notify && $reply_to->user_email_is_verified ) {
+        # "Get notified if somebody replies to this post"
+        $self->mail_queue->create(
+            {   to      => $reply_to->user_email,
+                subject => sprintf( 'Somebody replied to your comment on %s',
+                    $topic->url ),
+                body => "Here's the reply:\n\n"
+                    . $reply->user_name
+                    . "said: \n"
+                    . $reply->body . "\n\n"
+                    . $topic->url . "\n\n"
+                    . "Unsubscribe from this comment: TODO\n"
+                    . "Unsubscribe from this topic:   TODO\n"
+            }
+        );
+    }
+
+    # TODO check if other users or watching this topic
+    # "Get notified on any activity on this topic"
+
 }
 
 __PACKAGE__->meta->make_immutable;
