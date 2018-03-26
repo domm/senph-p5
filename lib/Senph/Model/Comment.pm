@@ -39,9 +39,6 @@ sub show_topic {
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 
-    state $cnt = 0;
-    $cnt++;
-    $self->mail_queue->create({ to=>'domm@plix.at', subject=>'test '.$cnt, body=>'comment viewed' });
     return \%data;
 }
 
