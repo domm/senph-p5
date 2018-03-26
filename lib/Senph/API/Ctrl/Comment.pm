@@ -38,7 +38,7 @@ sub reply_POST {
     my $topic  = uri_unescape( $args->{topic} );
     my $payload = $req->json_payload;
 
-    $self->comment_model->create_reply( $topic, $args->{reply_to}, $create );
+    $self->comment_model->create_reply( $topic, $args->{reply_to}, $payload );
 
     my $data = $self->comment_model->show_topic($topic);
     return $req->json_response($data);
