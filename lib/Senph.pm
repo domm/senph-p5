@@ -75,6 +75,7 @@ my $c = container 'Senph' => as {
                 smtp_user     => literal( $config->load->{smtp}{user} ),
                 smtp_password => literal( $config->load->{smtp}{password} ),
                 smtp_sender   => literal( $config->load->{smtp}{sender} ),
+                renderer      => '/Template/Mail',
             }
         );
     };
@@ -87,6 +88,17 @@ my $c = container 'Senph' => as {
                 basedir     => literal( $config->load->{data_dir} ),
                 loop        => '/Async/Loop',
                 http_client => '/Async/HTTPClient',
+            }
+        );
+    };
+
+    container 'Template' => as {
+        service 'Mail' => (
+            lifecycle    => 'Singleton',
+            class        => 'Text::Xslate',
+            dependencies => {
+                path => literal('./root/mail/en'), # only en for now
+                cache_dir=>literal('./tmp/xslate_mail'),
             }
         );
     };

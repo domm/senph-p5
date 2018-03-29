@@ -31,5 +31,5 @@ requires 'Net::Async::HTTP';
 requires 'IO::Async::SSL';
 requires 'Router::Simple';
 requires 'Net::Async::SMTP' => '0.003';
-requires 'Text::Xslate::Syntax::TTerse';
+requires 'Text::Xslate';
 

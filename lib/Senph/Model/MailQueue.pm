@@ -20,6 +20,12 @@ has 'queue' => (
     }
 );
 
+has 'renderer' => (
+    is       => 'ro',
+    isa      => 'Text::Xslate',
+    required => 1,
+);
+
 has 'smtp' => (
     is       => 'ro',
     isa      => 'Net::Async::SMTP::Client',
@@ -94,7 +100,23 @@ sub send {
     $s->quit->get;
 }
 
-# sub create_notify_new_comment: to site-owner: delete-link
+sub create_notify_new_comment { #: to site-owner: delete-link
+    my ($self, $args) = @_;
+
+    my $mail = $self->renderer->render('owner_new_comment.tx', {
+        comment=> {
+            user_name=>'user',
+            #user_email=>'dfg@dfg',
+            body=>'le comment'
+        },
+        senph => {
+            version=>$Senph::VERSION,
+            host=>'dsfgdfg',
+        }});
+    warn $mail;
+
+}
+
 # sub create_approve: to site-owner; approve-link, delete-link
 # sub create_verification: to author; verify-link, delete-link, settings-link?
 # sub create_notify_reply: to author; view-link, unsubscribe-link

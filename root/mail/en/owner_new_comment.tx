@@ -1,0 +1,14 @@
+: cascade mail
+
+: around body -> {
+: if $comment.user_email {
+by: <: $comment.user_name :> <<: $comment.user_email :>>
+: } else {
+by: <: $comment.user_name :>
+: }
+
+<: $comment.body :>
+
+Manage: <: $manage_url :>
+Topic: <: $topic_url :>
+:}
