@@ -12,13 +12,13 @@ use Log::Any qw($log);
 
 has 'comment_ctrl' => (
     is       => 'ro',
-    isa      => 'Senph::PSGI::API::Comment',
+    isa      => 'Senph::PSGI::Ctrl::Comment',
     required => 1,
 );
 
 has 'approve_ctrl' => (
     is       => 'ro',
-    isa      => 'Senph::PSGI::Web::Approve',
+    isa      => 'Senph::PSGI::Ctrl::Approve',
     required => 1,
 );
 
@@ -39,7 +39,7 @@ sub app {
 
     my $api = sub {
         my $env = shift;
-        my $req = Senph::API::Request->new_from_env($env);
+        my $req = Senph::PSGI::Request->new_from_env($env);
 
         if ( my $p = $router->match($env) ) {
             my $ctrl   = delete $p->{controller};

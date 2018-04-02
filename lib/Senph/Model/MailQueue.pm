@@ -119,7 +119,7 @@ sub create_notify_new_comment { #: to site-owner: delete-link, approve-link
             version=>$Senph::VERSION,
             instance=>$self->instance,
     }});
-    
+
     $self->create({
         to=>'..',
         subject => sprintf('New comment on %s', 'dfg' ),

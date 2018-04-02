@@ -1,4 +1,4 @@
-package Senph::API::Request;
+package Senph::PSGI::Request;
 use 5.026;
 
 # ABSTRACT: Request class providing various helper methods

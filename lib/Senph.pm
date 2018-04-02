@@ -25,7 +25,7 @@ my $c = container 'Senph' => as {
             class        => 'Senph::Async',
             lifecycle    => 'Singleton',
             dependencies => {
-                psgi => '/PSGI/API',
+                psgi => '/PSGI/App',
                 loop         => '/Async/Loop',
                 mail_queue   => '/Model/MailQueue',
 
@@ -39,13 +39,12 @@ my $c = container 'Senph' => as {
     };
 
     container 'PSGI' => as {
-        service 'API' => (
-            class=>'Senph::API::PSGI',
+        service 'App' => (
+            class=>'Senph::PSGI',
             lifecycle    => 'Singleton',
             dependencies => {
                 comment_ctrl => '/Controller/Comment',
-                loop         => '/Async/Loop',
-                mail_queue   => '/Model/MailQueue',
+                approve_ctrl => '/Controller/Approve',
             }
         );
     };
@@ -53,7 +52,12 @@ my $c = container 'Senph' => as {
     container 'Controller' => as {
         service 'Comment' => (
             lifecycle    => 'Singleton',
-            class        => 'Senph::API::Ctrl::Comment',
+            class        => 'Senph::PSGI::Ctrl::Comment',
+            dependencies => { comment_model => '/Model/Comment' }
+        );
+        service 'Approve' => (
+            lifecycle    => 'Singleton',
+            class        => 'Senph::PSGI::Ctrl::Approve',
             dependencies => { comment_model => '/Model/Comment' }
         );
     };

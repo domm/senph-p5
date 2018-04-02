@@ -23,15 +23,16 @@ has 'mail_queue' => (
 );
 
 has 'psgi' => (
-    is=>'ro',
-    isa=>'Senph::API::PSGI',
-    required=>1,
+    is       => 'ro',
+    isa      => 'Senph::PSGI',
+    required => 1,
 );
 
 sub run {
     my $self = shift;
 
-    my $httpserver = Net::Async::HTTP::Server::PSGI->new( app => $self->psgi->app );
+    my $httpserver =
+        Net::Async::HTTP::Server::PSGI->new( app => $self->psgi->app );
 
     $self->loop->add($httpserver);
 

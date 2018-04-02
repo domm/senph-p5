@@ -1,4 +1,4 @@
-package Senph::API::Ctrl::Comment;
+package Senph::PSGI::Ctrl::Comment;
 use 5.026;
 
 # ABSTRACT: API Controller for comment
