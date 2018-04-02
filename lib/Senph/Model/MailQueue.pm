@@ -39,16 +39,50 @@ has [ 'smtp_user', 'smtp_password', 'smtp_sender' ] => (
 );
 
 has 'instance' => (
-    is=>'ro',
-    isa=>'Str',
-    required=>1,
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
 );
+
+sub create_notify_new_comment {    #: to site-owner: delete-link, approve-link
+    my ( $self, $args ) = @_;
+
+    my $comment = $args->{comment};
+
+    $self->create(
+        {   template => 'owner_new_comment.tx',
+            to       => 'domm@plix.at',
+            subject  => sprintf( 'New comment on %s', $args->{topic}->url ),
+            data     => {
+                comment => {
+                    user_name  => $comment->user_name,
+                    user_email => $comment->user_email,
+                    body       => $comment->body,
+                },
+            }
+        }
+    );
+}
+
+# sub create_approve: to site-owner; approve-link, delete-link
+# sub create_verification: to author; verify-link, delete-link, settings-link?
+# sub create_notify_reply: to author; view-link, unsubscribe-link
+# sub create_notify_activity: to subscribers: view-link, unsubscribe-link
+# sub create_blacklist: to email; optout-link
 
 sub create {
     my ( $self, $args ) = @_;
 
     $log->debugf( "Creating mail '%s' for %s", $args->{subject},
         $args->{to} );
+
+    my $data = $args->{data};
+    $data->{senph} = {
+        version  => $Senph::VERSION,
+        instance => $self->instance,
+    };
+    my $body = $self->renderer->render( $args->{template}, $data );
+
     $self->enqueue(
         Email::Simple->create(
             header => [
@@ -59,13 +93,7 @@ sub create {
                 encoding => "8bitmime",
                 charset  => "UTF-8",
             },
-            body => $args->{body} . <<"EOFOOTER",
-
--- 
-Senph $Senph::VERSION
-https://senph.plix.at
-Never send me an email again:  TODO/blacklist
-EOFOOTER
+            body => $body,
         )
     );
 }
@@ -79,8 +107,8 @@ sub send {
     $s->connected->then(
         sub {
             $s->login(
-            user => $self->smtp_user,
-            pass => $self->smtp_password,
+                user => $self->smtp_user,
+                pass => $self->smtp_password,
             );
         }
     )->get;
@@ -105,34 +133,6 @@ sub send {
     }
     $s->quit->get;
 }
-
-sub create_notify_new_comment { #: to site-owner: delete-link, approve-link
-    my ($self, $args) = @_;
-
-    my $body = $self->renderer->render('owner_new_comment.tx', {
-        comment=> {
-            user_name=>'user',
-            #user_email=>'dfg@dfg',
-            body=>'le comment'
-        },
-        senph => {
-            version=>$Senph::VERSION,
-            instance=>$self->instance,
-    }});
-
-    $self->create({
-        to=>'..',
-        subject => sprintf('New comment on %s', 'dfg' ),
-        body=>$body,
-    });
-}
-
-# sub create_approve: to site-owner; approve-link, delete-link
-# sub create_verification: to author; verify-link, delete-link, settings-link?
-# sub create_notify_reply: to author; view-link, unsubscribe-link
-# sub create_notify_activity: to subscribers: view-link, unsubscribe-link
-# sub create_blacklist: to email; optout-link
-
 
 __PACKAGE__->meta->make_immutable;
 

@@ -39,7 +39,10 @@ sub show_topic {
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 
-$self->mail_queue->create_notify_new_comment;
+$self->mail_queue->create_notify_new_comment({
+        topic=>$topic,
+        comment=>$topic->comments->[0],
+    });
 
     return \%data;
 }
