@@ -72,10 +72,11 @@ my $c = container 'Senph' => as {
             class        => 'Senph::Model::MailQueue',
             dependencies => {
                 smtp          => '/Async/SMTP',
-                smtp_user     => literal( $config->load->{smtp}{user} ),
-                smtp_password => literal( $config->load->{smtp}{password} ),
-                smtp_sender   => literal( $config->load->{smtp}{sender} ),
+                smtp_user     => from_conf(qw( smtp user )),
+                smtp_password => from_conf(qw( smtp password )),
+                smtp_sender   => from_conf(qw( smtp sender )),
                 renderer      => '/Template/Mail',
+                instance      => from_conf('instance'),
             }
         );
     };
@@ -85,7 +86,7 @@ my $c = container 'Senph' => as {
             lifecycle    => 'Singleton',
             class        => 'Senph::Store',
             dependencies => {
-                basedir     => literal( $config->load->{data_dir} ),
+                basedir     => from_conf('data_dir'),
                 loop        => '/Async/Loop',
                 http_client => '/Async/HTTPClient',
             }
@@ -143,6 +144,15 @@ my $c = container 'Senph' => as {
 
 sub init {
     return $c;
+}
+
+sub from_conf {
+    my @path = @_;
+    my $val = $config->load;
+    while (my $ele = shift(@path)) {
+        $val = $val->{$ele};
+    }
+    return literal($val);
 }
 
 1;

@@ -5,4 +5,5 @@
         password => 'the-password',
         sender   => 'sender-email@example.com',
     },
+    instance=>'https://senph.plix.at',
 };
