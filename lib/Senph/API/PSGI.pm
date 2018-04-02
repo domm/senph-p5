@@ -1,4 +1,4 @@
-package Senph::API::PSGI;
+package Senph::PSGI;
 use 5.026;
 use Moose;
 
@@ -6,13 +6,19 @@ use Moose;
 
 use Plack::Builder;
 use Router::Simple;
-use Senph::API::Request;
+use Senph::PSGI::Request;
 
 use Log::Any qw($log);
 
 has 'comment_ctrl' => (
     is       => 'ro',
-    isa      => 'Senph::API::Ctrl::Comment',
+    isa      => 'Senph::PSGI::API::Comment',
+    required => 1,
+);
+
+has 'approve_ctrl' => (
+    is       => 'ro',
+    isa      => 'Senph::PSGI::Web::Approve',
     required => 1,
 );
 
@@ -24,7 +30,7 @@ sub app {
         { controller => 'comment_ctrl', action => 'topic', rest => 1 } );
     $router->connect( '/api/comment/:topic/:reply_to',
         { controller => 'comment_ctrl', action => 'reply', rest => 1 } );
-    $router->connect( '/web/approve/:topic/',
+    $router->connect( '/web/approve/:topic/:secret',
         { controller => 'approve_ctrl', action => 'form' } );
     $router->connect( '/web/verify-mail/:comment/:secret',
         { controller => 'approve_ctrl', action => 'form' } );
