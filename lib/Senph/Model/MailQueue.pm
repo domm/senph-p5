@@ -38,6 +38,12 @@ has [ 'smtp_user', 'smtp_password', 'smtp_sender' ] => (
     required => 1,
 );
 
+has 'instance' => (
+    is=>'ro',
+    isa=>'Str',
+    required=>1,
+);
+
 sub create {
     my ( $self, $args ) = @_;
 
@@ -100,10 +106,10 @@ sub send {
     $s->quit->get;
 }
 
-sub create_notify_new_comment { #: to site-owner: delete-link
+sub create_notify_new_comment { #: to site-owner: delete-link, approve-link
     my ($self, $args) = @_;
 
-    my $mail = $self->renderer->render('owner_new_comment.tx', {
+    my $body = $self->renderer->render('owner_new_comment.tx', {
         comment=> {
             user_name=>'user',
             #user_email=>'dfg@dfg',
@@ -111,10 +117,14 @@ sub create_notify_new_comment { #: to site-owner: delete-link
         },
         senph => {
             version=>$Senph::VERSION,
-            host=>'dsfgdfg',
-        }});
-    warn $mail;
-
+            instance=>$self->instance,
+    }});
+    
+    $self->create({
+        to=>'..',
+        subject => sprintf('New comment on %s', 'dfg' ),
+        body=>$body,
+    });
 }
 
 # sub create_approve: to site-owner; approve-link, delete-link
