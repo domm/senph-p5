@@ -44,10 +44,30 @@ has 'instance' => (
     required => 1,
 );
 
+use IO::Async::Timer::Countdown;
+
+has 'loop' => (
+    is       => 'ro',
+    isa      => 'IO::Async::Loop',
+    required => 1,
+);
+
+has 'ppr' => (
+    is      => 'ro',
+    isa     => 'HashRef',
+    traits  => ['Hash'],
+    default => sub { {} },
+);
+
 sub create_notify_new_comment {    #: to site-owner: delete-link, approve-link
     my ( $self, $args ) = @_;
 
     my $comment = $args->{comment};
+    my $topic_ident = $args->{topic}->url;
+    if ($self->ppr->{$topic_ident}) {
+        $log->debugf("Ignoring notify_new_comment on %s because we just sent one...", $topic_ident);
+        return;
+    }
 
     $self->create(
         {   template => 'owner_new_comment.tx',
@@ -62,6 +82,18 @@ sub create_notify_new_comment {    #: to site-owner: delete-link, approve-link
             }
         }
     );
+    $self->ppr->{$topic_ident} = 1;
+
+    my $timer = IO::Async::Timer::Countdown->new(
+        delay => 10,
+        on_expire => sub {
+            $self->ppr->{$topic_ident} = 0;
+            $log->debugf("Stop blocking %s ", $topic_ident);
+        },
+    );
+    $timer->start;
+
+    $self->loop->add( $timer );
 }
 
 # sub create_approve: to site-owner; approve-link, delete-link

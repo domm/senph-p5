@@ -89,6 +89,7 @@ my $c = container 'Senph' => as {
                 smtp_sender   => from_conf(qw( smtp sender )),
                 renderer      => '/Template/Mail',
                 instance      => from_conf('instance'),
+                loop       => '/Async/Loop',
             }
         );
     };
