@@ -25,10 +25,9 @@ my $c = container 'Senph' => as {
             class        => 'Senph::Async',
             lifecycle    => 'Singleton',
             dependencies => {
-                psgi => '/PSGI/App',
-                loop         => '/Async/Loop',
-                mail_queue   => '/Model/MailQueue',
-
+                psgi       => '/PSGI/App',
+                loop       => '/Async/Loop',
+                mail_queue => '/Model/MailQueue',
             }
         );
         service 'disqus2senph.pl' => (
@@ -40,11 +39,20 @@ my $c = container 'Senph' => as {
 
     container 'PSGI' => as {
         service 'App' => (
-            class=>'Senph::PSGI',
+            class        => 'Senph::PSGI',
             lifecycle    => 'Singleton',
             dependencies => {
+                router       => '/PSGI/Router',
                 comment_ctrl => '/Controller/Comment',
                 approve_ctrl => '/Controller/Approve',
+            }
+        );
+        service 'Router' => (
+            class     => 'Router::Simple',
+            lifecycle => 'Singleton',
+            block     => sub {
+                use_module('Senph::PSGI::Router');
+                return Senph::PSGI::Router->routes;
             }
         );
     };
@@ -102,8 +110,8 @@ my $c = container 'Senph' => as {
             lifecycle    => 'Singleton',
             class        => 'Text::Xslate',
             dependencies => {
-                path => literal('./root/mail/en'), # only en for now
-                cache_dir=>literal('./tmp/xslate_mail'),
+                path      => literal('./root/mail/en'),      # only en for now
+                cache_dir => literal('./tmp/xslate_mail'),
             }
         );
     };
@@ -152,8 +160,8 @@ sub init {
 
 sub from_conf {
     my @path = @_;
-    my $val = $config->load;
-    while (my $ele = shift(@path)) {
+    my $val  = $config->load;
+    while ( my $ele = shift(@path) ) {
         $val = $val->{$ele};
     }
     return literal($val);

@@ -73,7 +73,7 @@ sub create_comment {
     my $topic = $self->store->load_topic($topic_url);
 
     $comment_data->{ident} = $topic->comment_count;
-    my $comment = $self->_do_create( $site, $topic, $topic, $comment_data );
+    my $comment = $self->_do_create( $site, $topic, undef, $comment_data );
 
     $self->mail_queue->enqueue(
         Email::Simple->create(
@@ -124,7 +124,7 @@ sub create_reply {
 }
 
 sub _do_create {
-    my ( $self, $site, $topic, $parent, $comment_data ) = @_;
+    my ( $self, $site, $topic, $reply_to, $comment_data ) = @_;
 
     if ( !$topic->allow_comments || !$site->global_allow_comments ) {
         Senph::X::Forbidden->throw(
@@ -143,7 +143,12 @@ sub _do_create {
 
     my $comment = Senph::Object::Comment->new( $comment_data->%* );
 
-    push( $parent->comments->@*, $comment );
+    if ($reply_to) {
+        push( $reply_to->comments->@*, $comment );
+    }
+    else {
+        push( $topic->comments->@*, $comment );
+    }
     $self->store->store_topic($topic);
 
     # TODO init verify author email if author wants notifications
