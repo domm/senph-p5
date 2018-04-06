@@ -136,14 +136,15 @@ sub send {
     return unless $self->queued;
 
     my $s = $self->smtp;
-    $s->connected->then(
+    my $future = $s->connected->then(
         sub {
             $s->login(
                 user => $self->smtp_user,
                 pass => $self->smtp_password,
             );
         }
-    )->get;
+    );
+    $self->loop->await($future); # loop->await or get?
 
     while ( my $email = $self->next_mail ) {
         $log->infof(
@@ -157,7 +158,7 @@ sub send {
                 to   => $email->header('to'),
                 from => $self->smtp_sender,
                 data => $email->as_string,
-            )->get;
+            )->get; # loop->await or get?
         };
         if ($@) {
             $log->errorf( "Could not send mail: %s", $@ );
