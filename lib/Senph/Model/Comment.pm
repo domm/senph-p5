@@ -39,11 +39,6 @@ sub show_topic {
     my @comments = $self->walk_comments($topic);
     $data{comments} = \@comments;
 
-$self->mail_queue->create_notify_new_comment({
-        topic=>$topic,
-        comment=>$topic->comments->[0],
-    });
-
     return \%data;
 }
 
@@ -75,22 +70,11 @@ sub create_comment {
     $comment_data->{ident} = $topic->comment_count;
     my $comment = $self->_do_create( $site, $topic, undef, $comment_data );
 
-    $self->mail_queue->enqueue(
-        Email::Simple->create(
-            header => [
-                From    => 'robot@plix.at',
-                To      => 'domm@plix.at',
-                Subject => 'test',
-            ],
-            attributes => {
-                encoding => "8bitmime",
-                charset  => "UTF-8",
-            },
-            body => 'hallo!',
-        )
-    );
-
-    $self->notify_approve($site, $topic, $comment) if $comment->status eq 'pending';
+    #$self->notify_approve($site, $topic, $comment) if $comment->status eq 'pending';
+    $self->mail_queue->create_notify_new_comment({
+        topic=>$topic,
+        comment=>$topic->comments->[0],
+    });
 
     $log->infof( "New comment create on %s as %s",
         $topic->url, $comment->ident );
@@ -115,8 +99,8 @@ sub create_reply {
     $comment_data->{ident} = $reply_to_ident . '.' . $reply_to->comment_count;
     my $reply = $self->_do_create( $site, $topic, $reply_to, $comment_data );
 
-    $self->notify_approve($site, $topic, $reply) if $reply->status eq 'pending';
-    $self->notify_watcher($site, $topic, $reply_to, $reply);
+    #$self->notify_approve($site, $topic, $reply) if $reply->status eq 'pending';
+    #$self->notify_watcher($site, $topic, $reply_to, $reply);
 
     $log->infof( "New reply created on %s as %s", $topic->url,
         $reply->ident );
@@ -154,18 +138,6 @@ sub _do_create {
     # TODO init verify author email if author wants notifications
 
     return $comment;
-}
-
-sub notify_approve {
-    my ($self, $site, $topic, $comment) = @_;
-    $self->mail_queue->create(
-        {   to      => $site->owner_email,
-            subject => sprintf( 'New comment on %s, please approve',
-                $site->name ),
-            body => "To approve, open this link:\n\n"
-            . $comment # TODO URL
-        }
-    );
 }
 
 sub notify_watcher {
