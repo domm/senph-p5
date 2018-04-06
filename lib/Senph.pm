@@ -5,7 +5,6 @@ use 5.026;
 
 our $VERSION = '0.001';
 
-use Moose;
 use Bread::Board;
 
 use Module::Runtime 'use_module';
