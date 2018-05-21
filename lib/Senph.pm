@@ -8,15 +8,12 @@ our $VERSION = '0.001';
 use Bread::Board;
 
 use Module::Runtime 'use_module';
-use Config::ZOMG;
 
 use Senph::X;
 
 use Senph::Object::Site;
 use Senph::Object::Topic;
 use Senph::Object::Comment;
-
-my $config = Config::ZOMG->new( name => "senph", path => "etc" );
 
 my $c = container 'Senph' => as {
     container 'App' => as {
@@ -83,11 +80,11 @@ my $c = container 'Senph' => as {
             class        => 'Senph::Model::MailQueue',
             dependencies => {
                 smtp          => '/Async/SMTP',
-                smtp_user     => from_conf(qw( smtp user )),
-                smtp_password => from_conf(qw( smtp password )),
-                smtp_sender   => from_conf(qw( smtp sender )),
+                smtp_user     => literal($ENV{SMTP_USER}),
+                smtp_password => literal($ENV{SMTP_PASSWORD}),
+                smtp_sender   => literal($ENV{SMTP_SENDER}),
                 renderer      => '/Template/Mail',
-                instance      => from_conf('instance'),
+                instance      => literal($ENV{INSTANCE}),
                 loop       => '/Async/Loop',
             }
         );
@@ -98,7 +95,7 @@ my $c = container 'Senph' => as {
             lifecycle    => 'Singleton',
             class        => 'Senph::Store',
             dependencies => {
-                basedir     => from_conf('data_dir'),
+                basedir     => literal($ENV{DATADIR} || './var/'),
                 loop        => '/Async/Loop',
                 http_client => '/Async/HTTPClient',
             }
@@ -145,7 +142,7 @@ my $c = container 'Senph' => as {
                 my $loop = $s->param('loop');
                 my $smtp =
                     Net::Async::SMTP::Client->new(
-                    host => $config->load->{smtp}{host} );
+                    host => $ENV{SMTP_HOST});
                 $loop->add($smtp);
                 return $smtp;
             },
@@ -156,15 +153,6 @@ my $c = container 'Senph' => as {
 
 sub init {
     return $c;
-}
-
-sub from_conf {
-    my @path = @_;
-    my $val  = $config->load;
-    while ( my $ele = shift(@path) ) {
-        $val = $val->{$ele};
-    }
-    return literal($val);
 }
 
 1;

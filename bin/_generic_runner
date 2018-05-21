@@ -2,7 +2,6 @@
 use 5.026;
 use strict;
 use warnings;
-use lib::projectroot qw(lib local::lib=local);
 
 use Log::Any::Adapter;
 use Module::Runtime 'use_module';
