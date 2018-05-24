@@ -4,7 +4,7 @@ use 5.026;
 # ABSTRACT: API Controller for comment
 
 use Moose;
-use URI::Escape;
+use MIME::Base64 qw(decode_base64url);
 
 has 'comment_model' => (
     is       => 'ro',
@@ -21,14 +21,14 @@ sub topic_GET {
     my ( $self, $req, $args ) = @_;
 
     my $topic =
-        $self->comment_model->show_topic( uri_unescape( $args->{topic} ) );
+        $self->comment_model->show_topic( decode_base64url( $args->{topic} ) );
     return $req->json_response($topic);
 }
 
 sub topic_POST {
     my ( $self, $req, $args ) = @_;
 
-    my $topic  = uri_unescape( $args->{topic} );
+    my $topic  = decode_base64url( $args->{topic} );
     my $payload = $req->json_payload;
 
     $self->comment_model->create_comment( $topic, $payload );
@@ -40,7 +40,7 @@ sub topic_POST {
 sub reply_POST {
     my ( $self, $req, $args ) = @_;
 
-    my $topic  = uri_unescape( $args->{topic} );
+    my $topic  = decode_base64url( $args->{topic} );
     my $payload = $req->json_payload;
 
     $self->comment_model->create_reply( $topic, $args->{reply_to}, $payload );
