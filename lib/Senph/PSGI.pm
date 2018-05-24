@@ -62,6 +62,7 @@ sub app {
 
     my $builder = Plack::Builder->new;
     $builder->add_middleware('Plack::Middleware::PrettyException');
+    $builder->add_middleware('Plack::Middleware::CrossOrigin', origins => '*');
     return $builder->wrap($app);
 }
 
