@@ -29,7 +29,8 @@ my $c = container 'Senph' => as {
         service 'disqus2senph.pl' => (
             class        => 'Senph::Script::Disqus2Senph',
             lifecycle    => 'Singleton',
-            dependencies => { comment_model => '/Model/Comment' }
+            dependencies => { comment_model => '/Model/Comment' },
+            parameters   => { dumpfile => { isa=>'Str' } },
         );
     };
 

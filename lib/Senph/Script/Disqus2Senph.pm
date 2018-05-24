@@ -15,7 +15,6 @@ has 'dumpfile' => (
     isa      => File,
     required => 1,
     coerce   => 1,
-    default  => 'domm-plix-at-2017-10-14T19_22_56.750499-all.xml',
 );
 
 has 'comment_model' => (
@@ -64,8 +63,10 @@ sub run {
         }
         else {
             $data{user_name}  = $p->{author}{name};
-            $data{user_email} = $p->{author}{email}
-                if !ref( $p->{author}{email} );    # ARGH, XML::Simple...
+            if ($p->{author}{email}) {
+                $data{user_email} = $p->{author}{email}
+                    if !ref( $p->{author}{email} );    # ARGH, XML::Simple...
+            }
         }
 
         my $topic = $topics{ $p->{thread}{'dsq:id'} };

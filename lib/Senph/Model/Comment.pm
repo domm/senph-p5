@@ -76,7 +76,7 @@ sub create_comment {
         comment=>$topic->comments->[0],
     });
 
-    $log->infof( "New comment create on %s as %s",
+    $log->infof( "New comment created on %s as %s",
         $topic->url, $comment->ident );
     return $comment;
 }
