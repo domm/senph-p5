@@ -12,6 +12,11 @@ has 'comment_model' => (
     required => 1,
 );
 
+sub index {
+    my ( $self, $req) = @_;
+    return $req->json_response({ version=>$Senph::VERSION, claim=>'simple comment system' });
+}
+
 sub topic_GET {
     my ( $self, $req, $args ) = @_;
 

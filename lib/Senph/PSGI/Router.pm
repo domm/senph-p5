@@ -9,6 +9,8 @@ sub routes {
     my $self = shift;
 
     my $router = Router::Simple->new();
+    $router->connect( '/',
+        { controller => 'comment_ctrl', action => 'index' } );
     $router->connect( '/api/comment/:topic',
         { controller => 'comment_ctrl', action => 'topic', rest => 1 } );
     $router->connect( '/api/comment/:topic/:reply_to',
