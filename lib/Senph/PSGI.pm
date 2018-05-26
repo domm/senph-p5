@@ -40,9 +40,8 @@ sub app {
             if ( delete $match->{rest} ) {
                 $action .= '_' . $req->method;
             }
-            unless ( $self->$ctrl->can($action) ) {
 
-                # TODO HEAD requests? Or handle via Middleware::CORS?
+            unless ( $self->$ctrl->can($action) ) {
                 return [
                     405,
                     [],
@@ -62,7 +61,7 @@ sub app {
 
     my $builder = Plack::Builder->new;
     $builder->add_middleware('Plack::Middleware::PrettyException');
-    $builder->add_middleware('Plack::Middleware::CrossOrigin', origins => '*');
+    $builder->add_middleware('Plack::Middleware::CrossOrigin', origins => '*', headers=>'*');
     return $builder->wrap($app);
 }
 
