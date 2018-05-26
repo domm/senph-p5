@@ -73,7 +73,7 @@ sub create_comment {
     #$self->notify_approve($site, $topic, $comment) if $comment->status eq 'pending';
     $self->mail_queue->create_notify_new_comment({
         topic=>$topic,
-        comment=>$topic->comments->[0],
+        comment=>$comment,
     });
 
     $log->infof( "New comment created on %s as %s",
