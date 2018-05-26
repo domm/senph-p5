@@ -31,10 +31,13 @@ sub topic_POST {
     my $topic  = decode_base64url( $args->{topic} );
     my $payload = $req->json_payload;
 
-    $self->comment_model->create_comment( $topic, $payload );
+    my $comment = $self->comment_model->create_comment( $topic, $payload );
 
     my $data = $self->comment_model->show_topic($topic);
-    return $req->json_response($data);
+    return $req->json_response({
+        status=>$comment->status,
+        topic=> $data
+    });
 }
 
 sub reply_POST {
@@ -43,10 +46,13 @@ sub reply_POST {
     my $topic  = decode_base64url( $args->{topic} );
     my $payload = $req->json_payload;
 
-    $self->comment_model->create_reply( $topic, $args->{reply_to}, $payload );
+    my $comment = $self->comment_model->create_reply( $topic, $args->{reply_to}, $payload );
 
     my $data = $self->comment_model->show_topic($topic);
-    return $req->json_response($data);
+    return $req->json_response({
+        status=>$comment->status,
+        topic=> $data
+    });
 }
 
 sub publish { }
