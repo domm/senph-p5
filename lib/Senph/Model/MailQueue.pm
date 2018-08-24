@@ -6,6 +6,7 @@ use 5.026;
 use Moose;
 use Log::Any qw($log);
 
+use Context::Singleton;
 use Email::Simple;
 
 has 'queue' => (

@@ -5,6 +5,7 @@ requires 'Log::Any';
 requires 'Throwable::X';
 requires 'Config::ZOMG';
 
+requires 'Context::Singleton';
 requires 'Cpanel::JSON::XS';
 requires 'JSON::MaybeXS';
 requires 'Unicode::UTF8';
