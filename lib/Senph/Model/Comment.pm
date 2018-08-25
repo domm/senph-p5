@@ -8,6 +8,7 @@ use MooseX::Types::Path::Tiny qw/Dir/;
 use Log::Any qw($log);
 
 use Email::Simple;
+use Context::Singleton;
 
 has 'store' => (
     is       => 'ro',

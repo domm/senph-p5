@@ -9,6 +9,7 @@ use Net::Async::SMTP::Client;
 use IO::Async::Timer::Periodic;
 
 use Log::Any qw($log);
+use Context::Singleton;
 
 has 'loop' => (
     is       => 'ro',
@@ -28,6 +29,18 @@ has 'psgi' => (
     required => 1,
 );
 
+contrive '/Senph/Async/HTTPServer/PSGI/port' => (
+    value => $ENV{SENPH_PORT} || 8080,
+);
+
+contrive '/Senph/Async/Timer/interval' => (
+    value => 3,
+);
+
+contrive '/Senph/Async/Timer/first_interval' => (
+    value => 1,
+);
+
 sub run {
     my $self = shift;
 
@@ -36,20 +49,19 @@ sub run {
 
     $self->loop->add($httpserver);
 
-    my $port = $ENV{SENPH_PORT} || 8080;
     $httpserver->listen(
         addr => {
             family   => "inet",
             socktype => "stream",
-            port     => $port,
+            port     => deduce ('/Senph/Async/HTTPServer/PSGI/port'),
         },
         on_listen_error => sub { die "Cannot listen - $_[-1]\n" },
     );
     $log->infof( "Starting up on http://localhost:%i", $port );
 
     my $timer = IO::Async::Timer::Periodic->new(
-        interval       => 3,
-        first_interval => 1,
+        interval       => deduce ('/Senph/Async/Timer/interval'),
+        first_interval => deduce ('/Senph/Async/Timer/first_interval'),
         on_tick        => sub {
             $self->mail_queue->send;
         }

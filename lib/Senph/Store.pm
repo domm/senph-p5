@@ -8,6 +8,7 @@ use MooseX::Types::Path::Tiny qw/Dir/;
 use Digest::SHA1 q(sha1_hex);
 use URI;
 use Log::Any qw($log);
+use Context::Singleton;
 
 has 'basedir' => (
     is       => 'ro',
@@ -19,11 +20,13 @@ has 'basedir' => (
 has 'loop' => (
     is       => 'ro',
     required => 1,
+    default => sub { deduce '/Senph/Async/Loop' },
 );
 
 has 'http_client' => (
     is       => 'ro',
     required => 1,
+    default => sub { deduce '/Senph/Async/HTTPClient' },
 );
 
 sub load_site {
